@@ -2,8 +2,15 @@
 
 namespace App\Modules\Role\Requests;
 
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+
 class RoleUpdatePostRequest extends RoleCreatePostRequest
 {
+    public function authorize()
+    {
+        return Auth::check() && Role::findOrFail($this->route('id'));
+    }
 
     /**
      * Get the validation rules that apply to the request.

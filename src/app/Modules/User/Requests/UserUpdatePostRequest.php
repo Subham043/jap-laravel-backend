@@ -2,11 +2,17 @@
 
 namespace App\Modules\User\Requests;
 
+use App\Modules\Authentication\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 
 
 class UserUpdatePostRequest extends UserCreatePostRequest
 {
+    public function authorize()
+    {
+        return Auth::check() && User::findOrFail($this->route('id'));
+    }
 
     /**
      * Get the validation rules that apply to the request.
