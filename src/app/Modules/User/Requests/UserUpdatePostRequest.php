@@ -18,8 +18,9 @@ class UserUpdatePostRequest extends UserCreatePostRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$this->route('id'),
-            'role' => 'required|string|exists:Spatie\Permission\Models\Role,name',
-            'password_confirmation' => 'nullable|string|min:8|required_with:password|same:password',
+            'role' => 'nullable|string|exists:Spatie\Permission\Models\Role,name',
+            'phone' => ['required','numeric', 'digits:10', 'unique:users,phone,'.$this->route('id')],
+            'confirm_password' => 'nullable|string|min:8|required_with:password|same:password',
             'password' => ['nullable',
                 'string',
                 Password::min(8)

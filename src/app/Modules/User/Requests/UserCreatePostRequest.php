@@ -30,8 +30,9 @@ class UserCreatePostRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'role' => 'required|string|exists:Spatie\Permission\Models\Role,name',
-            'password_confirmation' => 'string|min:8|required_with:password|same:password',
+            'phone' => ['required','numeric', 'digits:10', 'unique:users'],
+            'role' => 'nullable|string|exists:Spatie\Permission\Models\Role,name',
+            'confirm_password' => 'string|min:8|required_with:password|same:password',
             'password' => ['required',
                 'string',
                 Password::min(8)

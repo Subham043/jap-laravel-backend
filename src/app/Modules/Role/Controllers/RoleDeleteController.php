@@ -11,11 +11,11 @@ class RoleDeleteController extends Controller
 
     public function __construct(RoleService $roleService)
     {
-        $this->middleware('permission:delete roles', ['only' => ['get']]);
+        $this->middleware('permission:delete roles', ['only' => ['delete']]);
         $this->roleService = $roleService;
     }
 
-    public function get($id){
+    public function delete($id){
         $role = $this->roleService->getById($id);
 
         try {
@@ -24,9 +24,13 @@ class RoleDeleteController extends Controller
                 $role
             );
             $this->roleService->syncPermissions([] ,$role);
-            return redirect()->back()->with('success_status', 'Role deleted successfully.');
+            return response()->json([
+                'message' => "Role deleted successfully.",
+            ], 200);
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error_status', 'Something went wrong. Please try again');
+            return response()->json([
+                'message' => "Something went wrong. Please try again",
+            ], 400);
         }
     }
 

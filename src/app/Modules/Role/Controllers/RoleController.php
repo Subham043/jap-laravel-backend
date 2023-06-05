@@ -3,10 +3,10 @@
 namespace App\Modules\Role\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Role\Resources\RoleCollection;
 use App\Modules\Role\Services\RoleService;
-use Illuminate\Http\Request;
 
-class RolePaginateController extends Controller
+class RoleController extends Controller
 {
     private $roleService;
 
@@ -16,10 +16,10 @@ class RolePaginateController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function get(Request $request){
-        $data = $this->roleService->paginate($request->total ?? 10);
+    public function get(){
+        $role = $this->roleService->all();
         return response()->json([
-            'roles' => $data,
+            'role' => RoleCollection::collection($role),
         ], 200);
     }
 

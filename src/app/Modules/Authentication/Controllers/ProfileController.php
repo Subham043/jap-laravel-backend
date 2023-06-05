@@ -35,6 +35,12 @@ class ProfileController extends Controller
                 $request->validated(),
                 $user
             );
+            if ($request->user()->isDirty('email')) {
+                $request->user()->email_verified_at = null;
+                $request->user()->sendEmailVerificationNotification();
+                $request->user()->save();
+            }
+
             (new RateLimitService($request))->clearRateLimit();
             return response()->json([
                 'message' => "Profile Updated successfully.",

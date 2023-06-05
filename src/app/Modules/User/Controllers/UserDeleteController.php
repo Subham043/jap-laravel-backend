@@ -15,7 +15,7 @@ class UserDeleteController extends Controller
         $this->userService = $userService;
     }
 
-    public function get($id){
+    public function delete($id){
         $user = $this->userService->getById($id);
 
         try {
@@ -24,9 +24,13 @@ class UserDeleteController extends Controller
                 $user
             );
             $this->userService->syncRoles([], $user);
-            return redirect()->back()->with('success_status', 'User deleted successfully.');
+            return response()->json([
+                'message' => "User deleted successfully.",
+            ], 200);
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error_status', 'Something went wrong. Please try again');
+            return response()->json([
+                'message' => "Something went wrong. Please try again",
+            ], 400);
         }
     }
 

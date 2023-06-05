@@ -16,13 +16,6 @@ class RoleUpdateController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function get($id){
-        $data = $this->roleService->getById($id);
-        $permissions = $this->roleService->allPermissions();
-        $role_permissions = $data->permissions->pluck('name')->toArray();
-        return view('admin.pages.role.update', compact(['permissions', 'role_permissions', 'data']));
-    }
-
     public function post(RoleUpdatePostRequest $request, $id){
         $role = $this->roleService->getById($id);
 
@@ -33,9 +26,13 @@ class RoleUpdateController extends Controller
                 $role
             );
             $this->roleService->syncPermissions($request->permissions, $role);
-            return redirect()->intended(route('role.update.get', $role->id))->with('success_status', 'Role updated successfully.');
+            return response()->json([
+                'message' => "Role updated successfully.",
+            ], 200);
         } catch (\Throwable $th) {
-            return redirect()->intended(route('role.update.get', $role->id))->with('error_status', 'Something went wrong. Please try again');
+            return response()->json([
+                'message' => "Something went wrong. Please try again",
+            ], 400);
         }
 
     }

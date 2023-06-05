@@ -16,11 +16,6 @@ class RoleCreateController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function get(){
-        $permissions = $this->roleService->allPermissions();
-        return view('admin.pages.role.create', compact('permissions'));
-    }
-
     public function post(RoleCreatePostRequest $request){
 
         try {
@@ -29,9 +24,13 @@ class RoleCreateController extends Controller
                 $request->except('permissions')
             );
             $this->roleService->syncPermissions($request->permissions, $role);
-            return redirect()->intended(route('role.create.get'))->with('success_status', 'Role created successfully.');
+            return response()->json([
+                'message' => "Role created successfully.",
+            ], 201);
         } catch (\Throwable $th) {
-            return redirect()->intended(route('role.create.get'))->with('error_status', 'Something went wrong. Please try again');
+            return response()->json([
+                'message' => "Something went wrong. Please try again",
+            ], 400);
         }
 
     }

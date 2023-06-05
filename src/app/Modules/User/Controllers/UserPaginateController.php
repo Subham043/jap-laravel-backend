@@ -18,8 +18,9 @@ class UserPaginateController extends Controller
 
     public function get(Request $request){
         $data = $this->userService->paginate($request->total ?? 10);
-        return view('admin.pages.user.paginate', compact(['data']))
-            ->with('search', $request->query('filter')['search'] ?? '');
+        return response()->json([
+            'users' => $data,
+        ], 200);
     }
 
 }

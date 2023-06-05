@@ -26,7 +26,7 @@ class RoleService
 
     public function paginate(Int $total = 10): LengthAwarePaginator
     {
-        $query = Role::with(['permissions'])->whereNot('name', 'Super-Admin')->latest();
+        $query = Role::with(['permissions'])->latest();
         return QueryBuilder::for($query)
                 ->allowedFilters([
                     AllowedFilter::custom('search', new CommonFilter),
@@ -36,7 +36,7 @@ class RoleService
 
     public function getById(Int $id): Role|null
     {
-        return Role::with(['permissions'])->whereNot('name', 'Super-Admin')->findOrFail($id);
+        return Role::with(['permissions'])->findOrFail($id);
     }
 
     public function create(array $data): Role
@@ -46,7 +46,7 @@ class RoleService
 
     public function update(array $data, Role $role): Role
     {
-        $role->update($data);
+        $role->whereNot('name', 'Super-Admin')->update($data);
         return $role;
     }
 
@@ -57,7 +57,7 @@ class RoleService
 
     public function delete(Role $role): bool|null
     {
-        return $role->delete();
+        return $role->whereNot('name', 'Super-Admin')->delete();
     }
 
 }

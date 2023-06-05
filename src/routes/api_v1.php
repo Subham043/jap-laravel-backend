@@ -11,6 +11,8 @@ use App\Modules\Authentication\Controllers\LogoutController;
 use App\Modules\Authentication\Controllers\ProfileController;
 use App\Modules\Authentication\Controllers\RegisterController;
 use App\Modules\Authentication\Controllers\ResetPasswordController;
+use App\Modules\Role\Controllers\PermissionController;
+use App\Modules\Role\Controllers\RoleController;
 use App\Modules\Role\Controllers\RoleCreateController;
 use App\Modules\Role\Controllers\RoleDeleteController;
 use App\Modules\Role\Controllers\RolePaginateController;
@@ -56,18 +58,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/update-password', [PasswordUpdateController::class, 'post', 'as' => 'password.post'])->name('password.post');
     });
 
+    Route::get('/permissions', [PermissionController::class, 'get'])->name('permission.get');
     Route::prefix('role')->group(function () {
-        Route::get('/', [RolePaginateController::class, 'get', 'as' => 'role.paginate.get'])->name('role.paginate.get');
+        Route::get('/', [RoleController::class, 'get', 'as' => 'role.all.get'])->name('role.all.get');
+        Route::get('/paginate', [RolePaginateController::class, 'get', 'as' => 'role.paginate.get'])->name('role.paginate.get');
         Route::post('/create', [RoleCreateController::class, 'post', 'as' => 'role.create.get'])->name('role.create.post');
         Route::post('/update/{id}', [RoleUpdateController::class, 'post', 'as' => 'role.update.get'])->name('role.update.post');
-        Route::delete('/delete/{id}', [RoleDeleteController::class, 'get', 'as' => 'role.delete.get'])->name('role.delete.get');
+        Route::delete('/delete/{id}', [RoleDeleteController::class, 'delete', 'as' => 'role.delete.delete'])->name('role.delete.delete');
     });
 
     Route::prefix('user')->group(function () {
         Route::get('/', [UserPaginateController::class, 'get', 'as' => 'user.paginate.get'])->name('user.paginate.get');
         Route::post('/create', [UserCreateController::class, 'post', 'as' => 'user.create.get'])->name('user.create.post');
         Route::post('/update/{id}', [UserUpdateController::class, 'post', 'as' => 'user.update.get'])->name('user.update.post');
-        Route::delete('/delete/{id}', [UserDeleteController::class, 'get', 'as' => 'user.delete.get'])->name('user.delete.get');
+        Route::delete('/delete/{id}', [UserDeleteController::class, 'delete', 'as' => 'user.delete.delete'])->name('user.delete.delete');
     });
 
     Route::post('/auth/logout', [LogoutController::class, 'post', 'as' => 'logout.post'])->name('logout.post');
