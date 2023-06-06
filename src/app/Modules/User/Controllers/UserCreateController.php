@@ -4,6 +4,7 @@ namespace App\Modules\User\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\User\Requests\UserCreatePostRequest;
+use App\Modules\user\Resources\UserCollection;
 use App\Modules\User\Services\UserService;
 
 class UserCreateController extends Controller
@@ -28,6 +29,7 @@ class UserCreateController extends Controller
             }
             return response()->json([
                 'message' => "User created successfully.",
+                'user' => UserCollection::make($user),
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([

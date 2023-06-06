@@ -4,6 +4,7 @@ namespace App\Modules\User\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\User\Requests\UserUpdatePostRequest;
+use App\Modules\user\Resources\UserCollection;
 use App\Modules\User\Services\UserService;
 
 class UserUpdateController extends Controller
@@ -36,6 +37,7 @@ class UserUpdateController extends Controller
             }
             return response()->json([
                 'message' => "User updated successfully.",
+                'user' => UserCollection::make($request->user()),
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

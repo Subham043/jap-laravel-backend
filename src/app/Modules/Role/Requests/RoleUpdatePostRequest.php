@@ -9,7 +9,7 @@ class RoleUpdatePostRequest extends RoleCreatePostRequest
 {
     public function authorize()
     {
-        return Auth::check() && Role::findOrFail($this->route('id'));
+        return Auth::check() && Role::whereNot('name', 'Super-Admin')->findOrFail($this->route('id'));
     }
 
     /**

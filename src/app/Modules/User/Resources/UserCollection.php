@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Modules\Role\Resources;
+namespace App\Modules\user\Resources;
 
+use App\Modules\Role\Resources\RoleCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PermissionCollection extends JsonResource
+class UserCollection extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -17,8 +18,11 @@ class PermissionCollection extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
+            'roles' => RoleCollection::collection($this->roles),
         ];
     }
 }

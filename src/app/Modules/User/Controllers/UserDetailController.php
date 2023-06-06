@@ -5,9 +5,8 @@ namespace App\Modules\User\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\user\Resources\UserCollection;
 use App\Modules\User\Services\UserService;
-use Illuminate\Http\Request;
 
-class UserPaginateController extends Controller
+class UserDetailController extends Controller
 {
     private $userService;
 
@@ -17,9 +16,12 @@ class UserPaginateController extends Controller
         $this->userService = $userService;
     }
 
-    public function get(Request $request){
-        $data = $this->userService->paginate($request->total ?? 10);
-        return UserCollection::collection($data);
+    public function get($id){
+        $user = $this->userService->getById($id);
+
+        return response()->json([
+            'user' => UserCollection::make($user),
+        ], 200);
     }
 
 }

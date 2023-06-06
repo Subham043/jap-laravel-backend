@@ -3,6 +3,7 @@
 namespace App\Modules\Role\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Role\Resources\RoleCollection;
 use App\Modules\Role\Services\RoleService;
 use Illuminate\Http\Request;
 
@@ -18,9 +19,7 @@ class RolePaginateController extends Controller
 
     public function get(Request $request){
         $data = $this->roleService->paginate($request->total ?? 10);
-        return response()->json([
-            'roles' => $data,
-        ], 200);
+        return RoleCollection::collection($data);
     }
 
 }

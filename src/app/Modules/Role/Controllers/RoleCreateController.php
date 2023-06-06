@@ -5,6 +5,7 @@ namespace App\Modules\Role\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Role\Services\RoleService;
 use App\Modules\Role\Requests\RoleCreatePostRequest;
+use App\Modules\Role\Resources\RoleCollection;
 
 class RoleCreateController extends Controller
 {
@@ -26,6 +27,7 @@ class RoleCreateController extends Controller
             $this->roleService->syncPermissions($request->permissions, $role);
             return response()->json([
                 'message' => "Role created successfully.",
+                'role' => RoleCollection::make($role),
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([

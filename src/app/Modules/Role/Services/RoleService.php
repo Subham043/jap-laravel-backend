@@ -36,17 +36,17 @@ class RoleService
 
     public function getById(Int $id): Role|null
     {
-        return Role::with(['permissions'])->findOrFail($id);
+        return Role::with(['permissions'])->whereNot('name', 'Super-Admin')->findOrFail($id);
     }
 
     public function create(array $data): Role
     {
-        return Role::create($data);
+        return Role::create([...$data, 'guard_name' => 'web']);
     }
 
     public function update(array $data, Role $role): Role
     {
-        $role->whereNot('name', 'Super-Admin')->update($data);
+        $role->update([...$data]);
         return $role;
     }
 
@@ -57,7 +57,7 @@ class RoleService
 
     public function delete(Role $role): bool|null
     {
-        return $role->whereNot('name', 'Super-Admin')->delete();
+        return $role->delete();
     }
 
 }

@@ -15,10 +15,12 @@ use App\Modules\Role\Controllers\PermissionController;
 use App\Modules\Role\Controllers\RoleController;
 use App\Modules\Role\Controllers\RoleCreateController;
 use App\Modules\Role\Controllers\RoleDeleteController;
+use App\Modules\Role\Controllers\RoleDetailController;
 use App\Modules\Role\Controllers\RolePaginateController;
 use App\Modules\Role\Controllers\RoleUpdateController;
 use App\Modules\User\Controllers\UserCreateController;
 use App\Modules\User\Controllers\UserDeleteController;
+use App\Modules\User\Controllers\UserDetailController;
 use App\Modules\User\Controllers\UserPaginateController;
 use App\Modules\User\Controllers\UserUpdateController;
 
@@ -38,13 +40,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('auth')->group(function () {
-    Route::post('/login', [LoginController::class, 'post', 'as' => 'login.post'])->name('login.post');
-    Route::post('/register', [RegisterController::class, 'post', 'as' => 'register.post'])->name('register.post');
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'post', 'as' => 'forgot_password.post'])->name('forgot_password.post');
-    Route::post('/reset-password/{token}', [ResetPasswordController::class, 'post', 'as' => 'reset_password.post'])->name('reset_password.post')->middleware('signed');
+    Route::post('/login', [LoginController::class, 'post'])->name('login');
+    Route::post('/register', [RegisterController::class, 'post'])->name('register');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'post'])->name('forgot_password');
+    Route::post('/reset-password/{token}', [ResetPasswordController::class, 'post'])->name('reset_password')->middleware('signed');
 });
 
-Route::prefix('/email/verify')->middleware(['auth'])->group(function () {
+Route::prefix('/email/verify')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [VerifyRegisteredUserController::class, 'index', 'as' => 'index'])->name('verification.notice');
     Route::post('/resend-notification', [VerifyRegisteredUserController::class, 'resend_notification', 'as' => 'resend_notification'])->middleware(['throttle:6,1'])->name('verification.send');
     Route::get('/{id}/{hash}', [VerifyRegisteredUserController::class, 'verify_email', 'as' => 'verify_email'])->middleware(['signed'])->name('verification.verify');
@@ -58,23 +60,25 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/update-password', [PasswordUpdateController::class, 'post', 'as' => 'password.post'])->name('password.post');
     });
 
-    Route::get('/permissions', [PermissionController::class, 'get'])->name('permission.get');
-    Route::prefix('role')->group(function () {
-        Route::get('/', [RoleController::class, 'get', 'as' => 'role.all.get'])->name('role.all.get');
-        Route::get('/paginate', [RolePaginateController::class, 'get', 'as' => 'role.paginate.get'])->name('role.paginate.get');
-        Route::post('/create', [RoleCreateController::class, 'post', 'as' => 'role.create.get'])->name('role.create.post');
-        Route::post('/update/{id}', [RoleUpdateController::class, 'post', 'as' => 'role.update.get'])->name('role.update.post');
-        Route::delete('/delete/{id}', [RoleDeleteController::class, 'delete', 'as' => 'role.delete.delete'])->name('role.delete.delete');
+    Route::get('/permissions', [PermissionController::class, 'get'])->name('permission.all');
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [RoleController::class, 'get'])->name('role.all');
+        Route::get('/paginate', [RolePaginateController::class, 'get'])->name('role.paginate');
+        Route::post('/create', [RoleCreateController::class, 'post'])->name('role.create');
+        Route::post('/update/{id}', [RoleUpdateController::class, 'post'])->name('role.update');
+        Route::delete('/delete/{id}', [RoleDeleteController::class, 'delete'])->name('role.delete');
+        Route::get('/detail/{id}', [RoleDetailController::class, 'get'])->name('role.get');
     });
 
     Route::prefix('user')->group(function () {
-        Route::get('/', [UserPaginateController::class, 'get', 'as' => 'user.paginate.get'])->name('user.paginate.get');
-        Route::post('/create', [UserCreateController::class, 'post', 'as' => 'user.create.get'])->name('user.create.post');
-        Route::post('/update/{id}', [UserUpdateController::class, 'post', 'as' => 'user.update.get'])->name('user.update.post');
-        Route::delete('/delete/{id}', [UserDeleteController::class, 'delete', 'as' => 'user.delete.delete'])->name('user.delete.delete');
+        Route::get('/paginate', [UserPaginateController::class, 'get'])->name('user.paginate');
+        Route::post('/create', [UserCreateController::class, 'post'])->name('user.create');
+        Route::post('/update/{id}', [UserUpdateController::class, 'post'])->name('user.update');
+        Route::delete('/delete/{id}', [UserDeleteController::class, 'delete'])->name('user.delete');
+        Route::get('/detail/{id}', [UserDetailController::class, 'get'])->name('user.get');
     });
 
-    Route::post('/auth/logout', [LogoutController::class, 'post', 'as' => 'logout.post'])->name('logout.post');
+    Route::post('/auth/logout', [LogoutController::class, 'post', 'as' => 'logout'])->name('logout');
 });
 
 Route::get('/unauthenticated', function (Request $request) {

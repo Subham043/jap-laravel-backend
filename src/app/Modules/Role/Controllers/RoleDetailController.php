@@ -3,10 +3,10 @@
 namespace App\Modules\Role\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Role\Resources\PermissionCollection;
+use App\Modules\Role\Resources\RoleCollection;
 use App\Modules\Role\Services\RoleService;
 
-class PermissionController extends Controller
+class RoleDetailController extends Controller
 {
     private $roleService;
 
@@ -16,10 +16,10 @@ class PermissionController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function get(){
-        $permissions = $this->roleService->allPermissions();
+    public function get($id){
+        $role = $this->roleService->getById($id);
         return response()->json([
-            'permissions' => PermissionCollection::collection($permissions),
+            'role' => RoleCollection::make($role),
         ], 200);
     }
 
