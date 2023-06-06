@@ -2,6 +2,7 @@
 
 namespace App\Modules\Authentication\Resources;
 
+use App\Modules\Role\Resources\RoleCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthCollection extends JsonResource
@@ -19,7 +20,7 @@ class AuthCollection extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'roles' => $this->roles,
+            'roles' => RoleCollection::collection($this->roles),
         ];
     }
 }
