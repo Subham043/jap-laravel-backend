@@ -1,44 +1,46 @@
 <?php
 
-namespace App\Modules\Category\Models;
+namespace App\Modules\Product\Models;
 
-use App\Modules\Product\Models\Product;
+use App\Modules\Category\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class Category extends Model
+class Product extends Model
 {
-    protected $table = 'categories';
+    protected $table = 'products';
 
     protected $fillable = [
         'name',
         'slug',
         'description',
-        'banner_image',
-        'icon_image',
+        'price',
+        'discount',
+        'featured_image',
+        'image_title',
+        'image_alt',
         'meta_title',
         'meta_keywords',
         'meta_description',
         'user_id',
-        'is_active'
+        'is_active',
+        'is_new_arrival',
+        'is_featured',
+        'is_best_sale',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'is_active' => 'boolean',
+        'is_new_arrival' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_best_sale' => 'boolean',
     ];
 
-    public $image_path = 'category';
+    public $image_path = 'product';
 
-    protected function bannerImage(): Attribute
-    {
-        return Attribute::make(
-            set: fn (string $value) => 'storage/'.$this->image_path.'/'.$value,
-        );
-    }
-
-    protected function iconImage(): Attribute
+    protected function featuredImage(): Attribute
     {
         return Attribute::make(
             set: fn (string $value) => 'storage/'.$this->image_path.'/'.$value,
@@ -57,8 +59,8 @@ class Category extends Model
         return $this->belongsTo(User::class, 'user_id')->withDefault();
     }
 
-    public function products()
+    public function categories()
     {
-        return $this->belongsToMany(Product::class, 'product_categories', 'category_id', 'product_id');
+        return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id');
     }
 }

@@ -28,6 +28,11 @@ use App\Modules\Category\Controllers\CategoryDeleteController;
 use App\Modules\Category\Controllers\CategoryDetailController;
 use App\Modules\Category\Controllers\CategoryPaginateController;
 use App\Modules\Category\Controllers\CategoryUpdateController;
+use App\Modules\Product\Controllers\ProductCreateController;
+use App\Modules\Product\Controllers\ProductDeleteController;
+use App\Modules\Product\Controllers\ProductDetailController;
+use App\Modules\Product\Controllers\ProductPaginateController;
+use App\Modules\Product\Controllers\ProductUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +94,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/update/{id}', [CategoryUpdateController::class, 'post'])->name('category.update');
         Route::delete('/delete/{id}', [CategoryDeleteController::class, 'delete'])->name('category.delete');
         Route::get('/detail/{id}', [CategoryDetailController::class, 'get'])->name('category.get');
+    });
+
+    Route::prefix('product')->group(function () {
+        Route::get('/paginate', [ProductPaginateController::class, 'get'])->name('product.paginate');
+        Route::post('/create', [ProductCreateController::class, 'post'])->name('product.create');
+        Route::post('/update/{id}', [ProductUpdateController::class, 'post'])->name('product.update');
+        Route::delete('/delete/{id}', [ProductDeleteController::class, 'delete'])->name('product.delete');
+        Route::get('/detail/{id}', [ProductDetailController::class, 'get'])->name('product.get');
     });
 
     Route::post('/auth/logout', [LogoutController::class, 'post', 'as' => 'logout'])->name('logout');

@@ -22,7 +22,10 @@ class CategoryCreateController extends Controller
         try {
             //code...
             $category = $this->categoryService->create(
-                $request->safe()->except(['banner_image', 'icon_image'])
+                [
+                    ...$request->safe()->except(['banner_image', 'icon_image']),
+                    'user_id' => auth()->user()->id
+                ]
             );
 
             if($request->hasFile('banner_image')){
