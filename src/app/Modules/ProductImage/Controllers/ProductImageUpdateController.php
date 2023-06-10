@@ -32,7 +32,7 @@ class ProductImageUpdateController extends Controller
 
             return response()->json([
                 'message' => "Product Image updated successfully.",
-                'product' => ProductImageCollection::make($productImage),
+                'product_image' => ProductImageCollection::make($productImage),
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

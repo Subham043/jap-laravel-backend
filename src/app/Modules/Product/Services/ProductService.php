@@ -21,7 +21,7 @@ class ProductService
 
     public function paginate(Int $total = 10): LengthAwarePaginator
     {
-        $query = Product::with(['categories', 'other_images'])->latest();
+        $query = Product::with(['categories', 'other_images', 'reviews'])->latest();
         return QueryBuilder::for($query)
                 ->allowedFilters([
                     AllowedFilter::custom('search', new CommonFilter),
@@ -32,12 +32,12 @@ class ProductService
 
     public function getById(Int $id): Product|null
     {
-        return Product::with(['categories', 'other_images'])->findOrFail($id);
+        return Product::with(['categories', 'other_images', 'reviews'])->findOrFail($id);
     }
 
     public function getBySlug(String $slug): Product
     {
-        return Product::with(['categories', 'other_images'])->where('slug', $slug)->firstOrFail();
+        return Product::with(['categories', 'other_images', 'reviews'])->where('slug', $slug)->firstOrFail();
     }
 
     public function create(array $data): Product

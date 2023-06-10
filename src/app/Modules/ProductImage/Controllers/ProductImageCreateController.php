@@ -21,7 +21,7 @@ class ProductImageCreateController extends Controller
 
         try {
             //code...
-            $product = $this->productImageService->create(
+            $productImage = $this->productImageService->create(
                 [
                     ...$request->safe()->except(['image']),
                     'product_id' => $product_id,
@@ -30,12 +30,12 @@ class ProductImageCreateController extends Controller
             );
 
             if($request->hasFile('image')){
-                $this->productImageService->saveFile($product, 'image');
+                $this->productImageService->saveFile($productImage, 'image');
             }
 
             return response()->json([
                 'message' => "Product Image created successfully.",
-                'product' => ProductImageCollection::make($product),
+                'product_image' => ProductImageCollection::make($productImage),
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([

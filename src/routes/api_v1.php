@@ -38,6 +38,11 @@ use App\Modules\ProductImage\Controllers\ProductImageDeleteController;
 use App\Modules\ProductImage\Controllers\ProductImageDetailController;
 use App\Modules\ProductImage\Controllers\ProductImagePaginateController;
 use App\Modules\ProductImage\Controllers\ProductImageUpdateController;
+use App\Modules\ProductReview\Controllers\ProductReviewCreateController;
+use App\Modules\ProductReview\Controllers\ProductReviewDeleteController;
+use App\Modules\ProductReview\Controllers\ProductReviewDetailController;
+use App\Modules\ProductReview\Controllers\ProductReviewPaginateController;
+use App\Modules\ProductReview\Controllers\ProductReviewUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,12 +112,21 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/update/{id}', [ProductUpdateController::class, 'post'])->name('product.update');
         Route::delete('/delete/{id}', [ProductDeleteController::class, 'delete'])->name('product.delete');
         Route::get('/detail/{id}', [ProductDetailController::class, 'get'])->name('product.get');
-        Route::prefix('{product_id}/images')->group(function () {
-            Route::get('/paginate', [ProductImagePaginateController::class, 'get'])->name('product.image.paginate');
-            Route::post('/create', [ProductImageCreateController::class, 'post'])->name('product.image.create');
-            Route::post('/update/{id}', [ProductImageUpdateController::class, 'post'])->name('product.image.update');
-            Route::delete('/delete/{id}', [ProductImageDeleteController::class, 'delete'])->name('product.image.delete');
-            Route::get('/detail/{id}', [ProductImageDetailController::class, 'get'])->name('product.image.get');
+        Route::prefix('{product_id}')->group(function () {
+            Route::prefix('images')->group(function () {
+                Route::get('/paginate', [ProductImagePaginateController::class, 'get'])->name('product.image.paginate');
+                Route::post('/create', [ProductImageCreateController::class, 'post'])->name('product.image.create');
+                Route::post('/update/{id}', [ProductImageUpdateController::class, 'post'])->name('product.image.update');
+                Route::delete('/delete/{id}', [ProductImageDeleteController::class, 'delete'])->name('product.image.delete');
+                Route::get('/detail/{id}', [ProductImageDetailController::class, 'get'])->name('product.image.get');
+            });
+            Route::prefix('reviews')->group(function () {
+                Route::get('/paginate', [ProductReviewPaginateController::class, 'get'])->name('product.review.paginate');
+                Route::post('/create', [ProductReviewCreateController::class, 'post'])->name('product.review.create');
+                Route::post('/update/{id}', [ProductReviewUpdateController::class, 'post'])->name('product.review.update');
+                Route::delete('/delete/{id}', [ProductReviewDeleteController::class, 'delete'])->name('product.review.delete');
+                Route::get('/detail/{id}', [ProductReviewDetailController::class, 'get'])->name('product.review.get');
+            });
         });
     });
 

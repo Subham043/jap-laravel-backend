@@ -4,6 +4,7 @@ namespace App\Modules\Product\Models;
 
 use App\Modules\Category\Models\Category;
 use App\Modules\ProductImage\Models\ProductImage;
+use App\Modules\ProductReview\Models\ProductReview;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -63,6 +64,11 @@ class Product extends Model
     public function other_images()
     {
         return $this->hasMany(ProductImage::class, 'product_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class, 'product_id');
     }
 
     public function categories()

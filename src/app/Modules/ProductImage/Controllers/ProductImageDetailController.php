@@ -17,10 +17,10 @@ class ProductImageDetailController extends Controller
     }
 
     public function get($product_id, $id){
-        $product = $this->productImageService->getById($product_id, $id);
+        $productImage = $this->productImageService->getById($product_id, $id);
 
         return response()->json([
-            'product' => ProductImageCollection::make($product),
+            'product_image' => ProductImageCollection::make($productImage),
         ], 200);
     }
 
