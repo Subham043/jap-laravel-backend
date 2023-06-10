@@ -22,7 +22,7 @@ class RoleCreateController extends Controller
         try {
             //code...
             $role = $this->roleService->create(
-                $request->except('permissions')
+                $request->safe()->except('permissions')
             );
             $this->roleService->syncPermissions($request->permissions, $role);
             return response()->json([

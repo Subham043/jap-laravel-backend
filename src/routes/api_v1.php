@@ -23,6 +23,11 @@ use App\Modules\User\Controllers\UserDeleteController;
 use App\Modules\User\Controllers\UserDetailController;
 use App\Modules\User\Controllers\UserPaginateController;
 use App\Modules\User\Controllers\UserUpdateController;
+use App\Modules\Category\Controllers\CategoryCreateController;
+use App\Modules\Category\Controllers\CategoryDeleteController;
+use App\Modules\Category\Controllers\CategoryDetailController;
+use App\Modules\Category\Controllers\CategoryPaginateController;
+use App\Modules\Category\Controllers\CategoryUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +81,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/update/{id}', [UserUpdateController::class, 'post'])->name('user.update');
         Route::delete('/delete/{id}', [UserDeleteController::class, 'delete'])->name('user.delete');
         Route::get('/detail/{id}', [UserDetailController::class, 'get'])->name('user.get');
+    });
+
+    Route::prefix('category')->group(function () {
+        Route::get('/paginate', [CategoryPaginateController::class, 'get'])->name('category.paginate');
+        Route::post('/create', [CategoryCreateController::class, 'post'])->name('category.create');
+        Route::post('/update/{id}', [CategoryUpdateController::class, 'post'])->name('category.update');
+        Route::delete('/delete/{id}', [CategoryDeleteController::class, 'delete'])->name('category.delete');
+        Route::get('/detail/{id}', [CategoryDetailController::class, 'get'])->name('category.get');
     });
 
     Route::post('/auth/logout', [LogoutController::class, 'post', 'as' => 'logout'])->name('logout');

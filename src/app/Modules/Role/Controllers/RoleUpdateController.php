@@ -23,7 +23,7 @@ class RoleUpdateController extends Controller
         try {
             //code...
             $data = $this->roleService->update(
-                $request->except(['permissions']),
+                $request->safe()->except(['permissions']),
                 $role
             );
             $this->roleService->syncPermissions($request->permissions, $role);

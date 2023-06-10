@@ -4,7 +4,7 @@ namespace App\Modules\User\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\User\Requests\UserUpdatePostRequest;
-use App\Modules\user\Resources\UserCollection;
+use App\Modules\User\Resources\UserCollection;
 use App\Modules\User\Services\UserService;
 
 class UserUpdateController extends Controller
@@ -19,12 +19,12 @@ class UserUpdateController extends Controller
 
     public function post(UserUpdatePostRequest $request, $id){
         $user = $this->userService->getById($id);
-        $password = empty($request->password) ? [] : $request->only('password');
+        $password = empty($request->password) ? [] : $request->safe()->only('password');
 
         try {
             //code...
             $this->userService->update(
-                [...$request->except(['password', 'role']), ...$password],
+                [...$request->safe()->except(['password', 'role']), ...$password],
                 $user
             );
             if($request->role){

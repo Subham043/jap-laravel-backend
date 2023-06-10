@@ -25,7 +25,7 @@ class PasswordUpdateController extends Controller
             //code...
             $user = $this->authService->authenticated_user();
             $this->userService->update(
-                $request->only('password'),
+                $request->safe()->only('password'),
                 $user
             );
             (new RateLimitService($request))->clearRateLimit();

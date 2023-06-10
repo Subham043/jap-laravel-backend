@@ -4,7 +4,7 @@ namespace App\Modules\User\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\User\Requests\UserCreatePostRequest;
-use App\Modules\user\Resources\UserCollection;
+use App\Modules\User\Resources\UserCollection;
 use App\Modules\User\Services\UserService;
 
 class UserCreateController extends Controller
@@ -22,7 +22,7 @@ class UserCreateController extends Controller
         try {
             //code...
             $user = $this->userService->create(
-                $request->except('role')
+                $request->safe()->except('role')
             );
             if($request->role){
                 $this->userService->syncRoles([$request->role], $user);

@@ -3,7 +3,7 @@
 namespace App\Modules\User\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\user\Resources\UserCollection;
+use App\Modules\User\Resources\UserCollection;
 use App\Modules\User\Services\UserService;
 use Illuminate\Http\Request;
 
