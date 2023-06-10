@@ -2,7 +2,7 @@
 
 namespace App\Modules\Authentication\Models;
 
-
+use App\Modules\Wishlist\Models\Wishlist;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -81,6 +81,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new \App\Notifications\ResetPasswordQueued($token));
+    }
+
+    public function wishlist()
+    {
+        return $this->hasOne(Wishlist::class, 'user_id');
     }
 
     /**

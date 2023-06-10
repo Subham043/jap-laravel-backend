@@ -48,6 +48,8 @@ use App\Modules\ProductReview\Controllers\ProductReviewDeleteController;
 use App\Modules\ProductReview\Controllers\ProductReviewDetailController;
 use App\Modules\ProductReview\Controllers\ProductReviewPaginateController;
 use App\Modules\ProductReview\Controllers\ProductReviewUpdateController;
+use App\Modules\Wishlist\Controllers\WishlistDetailController;
+use App\Modules\Wishlist\Controllers\WishlistSaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +79,10 @@ Route::prefix('/email/verify')->middleware(['auth:sanctum'])->group(function () 
     Route::get('/{id}/{hash}', [VerifyRegisteredUserController::class, 'verify_email', 'as' => 'verify_email'])->middleware(['signed'])->name('verification.verify');
 });
 
+Route::prefix('enquiry')->group(function () {
+    Route::post('/create', [EnquiryCreateController::class, 'post'])->name('enquiry.create');
+});
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::prefix('profile')->group(function () {
@@ -101,6 +107,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/update/{id}', [UserUpdateController::class, 'post'])->name('user.update');
         Route::delete('/delete/{id}', [UserDeleteController::class, 'delete'])->name('user.delete');
         Route::get('/detail/{id}', [UserDetailController::class, 'get'])->name('user.get');
+    });
+
+    Route::prefix('wishlist')->group(function () {
+        Route::post('/', [WishlistSaveController::class, 'post'])->name('wishlist.create');
+        Route::get('/', [WishlistDetailController::class, 'get'])->name('wishlist.get');
     });
 
     Route::prefix('enquiry')->group(function () {
