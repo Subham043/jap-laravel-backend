@@ -28,6 +28,11 @@ use App\Modules\Category\Controllers\CategoryDeleteController;
 use App\Modules\Category\Controllers\CategoryDetailController;
 use App\Modules\Category\Controllers\CategoryPaginateController;
 use App\Modules\Category\Controllers\CategoryUpdateController;
+use App\Modules\Enquiry\Controllers\EnquiryCreateController;
+use App\Modules\Enquiry\Controllers\EnquiryDeleteController;
+use App\Modules\Enquiry\Controllers\EnquiryDetailController;
+use App\Modules\Enquiry\Controllers\EnquiryPaginateController;
+use App\Modules\Enquiry\Controllers\EnquiryUpdateController;
 use App\Modules\Product\Controllers\ProductCreateController;
 use App\Modules\Product\Controllers\ProductDeleteController;
 use App\Modules\Product\Controllers\ProductDetailController;
@@ -96,6 +101,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/update/{id}', [UserUpdateController::class, 'post'])->name('user.update');
         Route::delete('/delete/{id}', [UserDeleteController::class, 'delete'])->name('user.delete');
         Route::get('/detail/{id}', [UserDetailController::class, 'get'])->name('user.get');
+    });
+
+    Route::prefix('enquiry')->group(function () {
+        Route::get('/paginate', [EnquiryPaginateController::class, 'get'])->name('enquiry.paginate');
+        Route::post('/create', [EnquiryCreateController::class, 'post'])->name('enquiry.create');
+        Route::post('/update/{id}', [EnquiryUpdateController::class, 'post'])->name('enquiry.update');
+        Route::delete('/delete/{id}', [EnquiryDeleteController::class, 'delete'])->name('enquiry.delete');
+        Route::get('/detail/{id}', [EnquiryDetailController::class, 'get'])->name('enquiry.get');
     });
 
     Route::prefix('category')->group(function () {
