@@ -13,7 +13,7 @@ class RoleUpdateController extends Controller
 
     public function __construct(RoleService $roleService)
     {
-        $this->middleware('permission:edit roles', ['only' => ['get', 'post']]);
+        $this->middleware('permission:edit roles', ['only' => ['post']]);
         $this->roleService = $roleService;
     }
 

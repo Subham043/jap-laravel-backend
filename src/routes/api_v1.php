@@ -33,6 +33,11 @@ use App\Modules\Product\Controllers\ProductDeleteController;
 use App\Modules\Product\Controllers\ProductDetailController;
 use App\Modules\Product\Controllers\ProductPaginateController;
 use App\Modules\Product\Controllers\ProductUpdateController;
+use App\Modules\ProductImage\Controllers\ProductImageCreateController;
+use App\Modules\ProductImage\Controllers\ProductImageDeleteController;
+use App\Modules\ProductImage\Controllers\ProductImageDetailController;
+use App\Modules\ProductImage\Controllers\ProductImagePaginateController;
+use App\Modules\ProductImage\Controllers\ProductImageUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,6 +107,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/update/{id}', [ProductUpdateController::class, 'post'])->name('product.update');
         Route::delete('/delete/{id}', [ProductDeleteController::class, 'delete'])->name('product.delete');
         Route::get('/detail/{id}', [ProductDetailController::class, 'get'])->name('product.get');
+        Route::prefix('{product_id}/images')->group(function () {
+            Route::get('/paginate', [ProductImagePaginateController::class, 'get'])->name('product.image.paginate');
+            Route::post('/create', [ProductImageCreateController::class, 'post'])->name('product.image.create');
+            Route::post('/update/{id}', [ProductImageUpdateController::class, 'post'])->name('product.image.update');
+            Route::delete('/delete/{id}', [ProductImageDeleteController::class, 'delete'])->name('product.image.delete');
+            Route::get('/detail/{id}', [ProductImageDetailController::class, 'get'])->name('product.image.get');
+        });
     });
 
     Route::post('/auth/logout', [LogoutController::class, 'post', 'as' => 'logout'])->name('logout');

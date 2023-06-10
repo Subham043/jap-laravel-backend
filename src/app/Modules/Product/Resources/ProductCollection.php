@@ -3,6 +3,7 @@
 namespace App\Modules\Product\Resources;
 
 use App\Modules\Category\Resources\CategoryCollection;
+use App\Modules\ProductImage\Resources\ProductImageCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductCollection extends JsonResource
@@ -32,6 +33,7 @@ class ProductCollection extends JsonResource
             'is_new_arrival' => $this->is_new_arrival,
             'is_featured' => $this->is_featured,
             'is_best_sale' => $this->is_best_sale,
+            'other_images' => ProductImageCollection::collection($this->other_images),
             'categories' => CategoryCollection::collection($this->categories),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),

@@ -13,7 +13,7 @@ class CategoryUpdateController extends Controller
 
     public function __construct(CategoryService $categoryService)
     {
-        $this->middleware('permission:edit categories', ['only' => ['get', 'post']]);
+        $this->middleware('permission:edit categories', ['only' => ['post']]);
         $this->categoryService = $categoryService;
     }
 

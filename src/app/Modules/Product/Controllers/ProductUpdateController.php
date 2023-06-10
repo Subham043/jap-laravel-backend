@@ -13,7 +13,7 @@ class ProductUpdateController extends Controller
 
     public function __construct(ProductService $productService)
     {
-        $this->middleware('permission:edit products', ['only' => ['get', 'post']]);
+        $this->middleware('permission:edit products', ['only' => ['post']]);
         $this->productService = $productService;
     }
 

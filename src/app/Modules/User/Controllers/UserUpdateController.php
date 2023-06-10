@@ -13,7 +13,7 @@ class UserUpdateController extends Controller
 
     public function __construct(UserService $userService)
     {
-        $this->middleware('permission:edit users', ['only' => ['get', 'post']]);
+        $this->middleware('permission:edit users', ['only' => ['post']]);
         $this->userService = $userService;
     }
 

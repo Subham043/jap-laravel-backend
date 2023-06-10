@@ -3,6 +3,7 @@
 namespace App\Modules\Product\Models;
 
 use App\Modules\Category\Models\Category;
+use App\Modules\ProductImage\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -57,6 +58,11 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id')->withDefault();
+    }
+
+    public function other_images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id');
     }
 
     public function categories()
