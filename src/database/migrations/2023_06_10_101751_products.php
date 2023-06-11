@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name', 500);
             $table->string('slug', 500)->unique();
             $table->text('description')->nullable();
-            $table->string('price', 500)->nullable();
-            $table->string('discount', 500)->nullable();
+            $table->string('price', 500)->default(0)->nullable();
+            $table->string('discount', 500)->default(0)->nullable();
             $table->text('featured_image')->nullable();
             $table->string('image_title', 500)->nullable();
             $table->string('image_alt', 500)->nullable();

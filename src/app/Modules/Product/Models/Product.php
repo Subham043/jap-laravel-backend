@@ -2,6 +2,7 @@
 
 namespace App\Modules\Product\Models;
 
+use App\Modules\Cart\Models\Cart;
 use App\Modules\Category\Models\Category;
 use App\Modules\ProductImage\Models\ProductImage;
 use App\Modules\ProductReview\Models\ProductReview;
@@ -39,6 +40,15 @@ class Product extends Model
         'is_new_arrival' => 'boolean',
         'is_featured' => 'boolean',
         'is_best_sale' => 'boolean',
+    ];
+
+    protected $attributes = [
+        'is_active' => true,
+        'is_new_arrival' => true,
+        'is_featured' => true,
+        'is_best_sale' => true,
+        'price' => 0,
+        'discount' => 0,
     ];
 
     public $image_path = 'product';
@@ -80,5 +90,10 @@ class Product extends Model
     public function wishlist()
     {
         return $this->belongsToMany(Wishlist::class, 'wishlist_products', 'product_id', 'wishlist_id');
+    }
+
+    public function cart()
+    {
+        return $this->belongsToMany(Cart::class, 'cart_products', 'product_id', 'cart_id');
     }
 }

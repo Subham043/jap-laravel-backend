@@ -29,6 +29,10 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
+    protected $attributes = [
+        'is_active' => true,
+    ];
+
     public $image_path = 'category';
 
     protected function bannerImage(): Attribute

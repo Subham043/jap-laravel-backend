@@ -50,6 +50,8 @@ use App\Modules\ProductReview\Controllers\ProductReviewPaginateController;
 use App\Modules\ProductReview\Controllers\ProductReviewUpdateController;
 use App\Modules\Wishlist\Controllers\WishlistDetailController;
 use App\Modules\Wishlist\Controllers\WishlistSaveController;
+use App\Modules\Cart\Controllers\CartDetailController;
+use App\Modules\Cart\Controllers\CartSaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +114,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('wishlist')->group(function () {
         Route::post('/', [WishlistSaveController::class, 'post'])->name('wishlist.create');
         Route::get('/', [WishlistDetailController::class, 'get'])->name('wishlist.get');
+    });
+
+    Route::prefix('cart')->group(function () {
+        Route::post('/', [CartSaveController::class, 'post'])->name('cart.create');
+        Route::get('/', [CartDetailController::class, 'get'])->name('cart.get');
     });
 
     Route::prefix('enquiry')->group(function () {
