@@ -17,6 +17,7 @@ class WishlistCollection extends JsonResource
     {
         return [
             'id' => $this->id,
+            'total_items' => $this->products_count,
             'products' => ProductCollection::collection($this->products),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),

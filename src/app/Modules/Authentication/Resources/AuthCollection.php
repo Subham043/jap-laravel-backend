@@ -20,6 +20,7 @@ class AuthCollection extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
+            'verified' => $this->email_verified_at ? "VERIFIED": "VERIFICATION PENDING",
             'roles' => RoleCollection::collection($this->roles),
         ];
     }

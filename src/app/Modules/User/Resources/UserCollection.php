@@ -20,6 +20,7 @@ class UserCollection extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
+            'verified' => $this->email_verified_at ? "VERIFIED": "VERIFICATION PENDING",
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
             'roles' => RoleCollection::collection($this->roles),

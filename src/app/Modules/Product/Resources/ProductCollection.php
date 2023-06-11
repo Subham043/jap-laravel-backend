@@ -2,6 +2,7 @@
 
 namespace App\Modules\Product\Resources;
 
+use App\Http\Services\PriceService;
 use App\Modules\Category\Resources\CategoryCollection;
 use App\Modules\ProductImage\Resources\ProductImageCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,6 +17,7 @@ class ProductCollection extends JsonResource
      */
     public function toArray($request)
     {
+        $priceService = new PriceService($this->price, $this->discount);
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -23,6 +25,7 @@ class ProductCollection extends JsonResource
             'description' => $this->description,
             'price' => $this->price,
             'discount' => $this->discount,
+            'discounted_price' => $priceService->getDiscountedPrice(),
             'meta_title' => $this->meta_title,
             'meta_keywords' => $this->meta_keywords,
             'meta_description' => $this->meta_description,

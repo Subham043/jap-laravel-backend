@@ -28,7 +28,7 @@ class WishlistRequest extends FormRequest
     {
         return [
             'product' => 'nullable|array|min:1',
-            'product.*' => 'nullable|numeric|exists:products,id',
+            'product.*' => 'nullable|numeric|gt:0|exists:products,id',
         ];
     }
 

@@ -36,6 +36,8 @@ class Product extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'price' => 'float',
+        'discount' => 'float',
         'is_active' => 'boolean',
         'is_new_arrival' => 'boolean',
         'is_featured' => 'boolean',

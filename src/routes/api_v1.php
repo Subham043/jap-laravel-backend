@@ -11,6 +11,7 @@ use App\Modules\Authentication\Controllers\LogoutController;
 use App\Modules\Authentication\Controllers\ProfileController;
 use App\Modules\Authentication\Controllers\RegisterController;
 use App\Modules\Authentication\Controllers\ResetPasswordController;
+use App\Modules\Authentication\Controllers\VerifyRegisteredUserController;
 use App\Modules\Role\Controllers\PermissionController;
 use App\Modules\Role\Controllers\RoleController;
 use App\Modules\Role\Controllers\RoleCreateController;
@@ -75,9 +76,8 @@ Route::prefix('auth')->group(function () {
     Route::post('/reset-password/{token}', [ResetPasswordController::class, 'post'])->name('reset_password')->middleware('signed');
 });
 
-Route::prefix('/email/verify')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/', [VerifyRegisteredUserController::class, 'index', 'as' => 'index'])->name('verification.notice');
-    Route::post('/resend-notification', [VerifyRegisteredUserController::class, 'resend_notification', 'as' => 'resend_notification'])->middleware(['throttle:6,1'])->name('verification.send');
+Route::prefix('/email/verify')->group(function () {
+    Route::post('/resend-notification', [VerifyRegisteredUserController::class, 'resend_notification', 'as' => 'resend_notification'])->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
     Route::get('/{id}/{hash}', [VerifyRegisteredUserController::class, 'verify_email', 'as' => 'verify_email'])->middleware(['signed'])->name('verification.verify');
 });
 
@@ -85,7 +85,7 @@ Route::prefix('enquiry')->group(function () {
     Route::post('/create', [EnquiryCreateController::class, 'post'])->name('enquiry.create');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'get', 'as' => 'profile.get'])->name('profile.get');

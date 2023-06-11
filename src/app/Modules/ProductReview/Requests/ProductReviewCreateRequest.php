@@ -31,7 +31,7 @@ class ProductReviewCreateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'message' => 'required|string',
-            'star' => 'required|numeric|max:5',
+            'star' => 'required|numeric|gte:0|max:5',
             'image' => 'required|image|max:500',
         ];
     }

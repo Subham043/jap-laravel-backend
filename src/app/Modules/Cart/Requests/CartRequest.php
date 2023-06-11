@@ -29,8 +29,8 @@ class CartRequest extends FormRequest
     {
         return [
             'data' => ['nullable', 'array', 'min:1'],
-            'data.*.product_id' => ['required_unless:data.*.quantity,0','numeric','exists:products,id', 'min:1'],
-            'data.*.quantity' => ['required_unless:data.*.product_id,0','numeric', 'min:1'],
+            'data.*.product_id' => ['required_unless:data.*.quantity,0','numeric', 'gt:0', 'exists:products,id', 'min:1'],
+            'data.*.quantity' => ['required_unless:data.*.product_id,0','numeric', 'gt:0', 'min:1'],
         ];
     }
 
