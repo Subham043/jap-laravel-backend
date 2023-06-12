@@ -34,7 +34,7 @@ class CartSaveController extends Controller
 
             return response()->json([
                 'message' => "Cart created successfully.",
-                'cart' => CartCollection::make($cart),
+                'cart' => CartCollection::make($this->cartService->get()),
             ], 200);
         } catch (\Throwable $th) {
             throw $th;

@@ -15,20 +15,27 @@ class CartCollection extends JsonResource
      */
     public function toArray($request)
     {
-        // $total_quantity = $this->products->sum('pivot.quantity');
-        // $sub_total = $this->products->sum('price') * $total_quantity;
-        // // $sub_total = $this->products->sum('price');
-        // // $sub_discount = ($this->products->sum('discount')/100) * $total_quantity;
-        // $sub_discount = ($this->products->sum('discount')/100);
-        // $total_discount = $sub_total * $sub_discount;
-        // $total_price = $sub_total - $total_discount;
+        $total_quantity = $this->products->sum('pivot.quantity');
+        $sub_total = 0;
+        $total_discount = 0;
+        $total_price = 0;
+        if($this->products_count > 0){
+            foreach ($this->products as $value) {
+                # code...
+                $total_qt_price = $value->price * $value->pivot->quantity;
+                $sub_total = $sub_total + $total_qt_price;
+                $discount = $total_qt_price * ($value->discount/100);
+                $total_discount = $total_discount + $discount;
+                $total_price = $total_price + ($total_qt_price - $discount);
+            }
+        }
         return [
             'id' => $this->id,
-            // 'total_price' => $total_price,
             'total_items' => $this->products_count,
-            // 'total_quantity' => $total_quantity,
-            // 'sub_total' => $sub_total,
-            // 'total_discount' => $total_discount,
+            'total_quantity' => $total_quantity,
+            'sub_total' => $sub_total,
+            'total_discount' => $total_discount,
+            'total_price' => $total_price,
             'products' => ProductCollection::collection($this->products),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),

@@ -34,7 +34,7 @@ class WishlistSaveController extends Controller
 
             return response()->json([
                 'message' => "Wishlist created successfully.",
-                'wishlist' => WishlistCollection::make($wishlist),
+                'wishlist' => WishlistCollection::make($this->wishlistService->get()),
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
