@@ -12,6 +12,7 @@ use App\Modules\Authentication\Controllers\ProfileController;
 use App\Modules\Authentication\Controllers\RegisterController;
 use App\Modules\Authentication\Controllers\ResetPasswordController;
 use App\Modules\Authentication\Controllers\VerifyRegisteredUserController;
+use App\Modules\Cart\Controllers\ApplyCouponController;
 use App\Modules\Role\Controllers\PermissionController;
 use App\Modules\Role\Controllers\RoleController;
 use App\Modules\Role\Controllers\RoleCreateController;
@@ -124,6 +125,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('cart')->group(function () {
         Route::post('/', [CartSaveController::class, 'post'])->name('cart.create');
         Route::get('/', [CartDetailController::class, 'get'])->name('cart.get');
+        Route::post('/apply-coupon', [ApplyCouponController::class, 'post'])->name('coupon.apply');
     });
 
     Route::prefix('enquiry')->group(function () {

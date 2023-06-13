@@ -36,4 +36,9 @@ class Coupon extends Model
     {
         return $this->belongsTo(User::class, 'user_id')->withDefault();
     }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'coupon_id');
+    }
 }

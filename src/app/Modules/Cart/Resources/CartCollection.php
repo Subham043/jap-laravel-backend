@@ -16,13 +16,17 @@ class CartCollection extends JsonResource
     public function toArray($request)
     {
         $total_quantity = $this->products->sum('pivot.quantity');
+        $total_price_with_coupon = $this->coupon_discount > 0 ? $this->total_price - $this->coupon_discount : $this->total_price;
         return [
             'id' => $this->id,
             'total_items' => $this->products_count,
             'total_quantity' => $total_quantity,
             'sub_total' => $this->sub_total,
             'total_discount' => $this->total_discount,
-            'total_price' => $this->total_price,
+            'total_price_excluding_coupon' => $this->total_price,
+            'total_price_with_coupon' => $total_price_with_coupon,
+            'coupon_discount' => $this->coupon_discount,
+            'coupon' => CouponCollection::make($this->coupon),
             'products' => ProductCollection::collection($this->products),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),

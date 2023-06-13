@@ -2,6 +2,7 @@
 
 namespace App\Modules\Cart\Models;
 
+use App\Modules\Coupon\Models\Coupon;
 use App\Modules\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,6 +39,11 @@ class Cart extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'cart_products', 'cart_id', 'product_id')->withPivot('quantity');
+    }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class, 'coupon_id')->withDefault();
     }
 
 }

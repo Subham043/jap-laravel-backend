@@ -2,6 +2,7 @@
 
 namespace App\Modules\Authentication\Models;
 
+use App\Modules\Cart\Models\Cart;
 use App\Modules\Wishlist\Models\Wishlist;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
@@ -86,6 +87,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function wishlist()
     {
         return $this->hasOne(Wishlist::class, 'user_id');
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'user_id');
     }
 
     /**
