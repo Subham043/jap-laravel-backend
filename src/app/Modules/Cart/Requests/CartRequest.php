@@ -38,12 +38,21 @@ class CartRequest extends FormRequest
                 'min:1',
                 function (string $attribute, mixed $value, Closure $fail) {
                     $product = Product::findOrFail($value);
-                    if ( empty($product->inventory) ||$product->inventory == 0) {
+                    $index = explode('.', $attribute)[1];
+                    if ( empty($product->inventory) || $product->inventory == 0) {
                         $fail("The {$attribute} is out of stock.");
+                    }
+                    if ($product->inventory < $this->input("data.{$index}.quantity")) {
+                        $fail("Requested quantity is more than the number of item in stock.");
                     }
                 },
             ],
-            'data.*.quantity' => ['required_unless:data.*.product_id,0','numeric', 'gt:0', 'min:1'],
+            'data.*.quantity' => [
+                'required_unless:data.*.product_id,0',
+                'numeric',
+                'gt:0',
+                'min:1',
+            ],
         ];
     }
 
