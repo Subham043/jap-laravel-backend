@@ -13,7 +13,7 @@ class RoleCreateController extends Controller
 
     public function __construct(RoleService $roleService)
     {
-        $this->middleware('permission:create roles', ['only' => ['get','post']]);
+        $this->middleware('permission:create roles', ['only' => ['post']]);
         $this->roleService = $roleService;
     }
 

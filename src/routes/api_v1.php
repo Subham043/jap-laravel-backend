@@ -53,6 +53,11 @@ use App\Modules\Wishlist\Controllers\WishlistDetailController;
 use App\Modules\Wishlist\Controllers\WishlistSaveController;
 use App\Modules\Cart\Controllers\CartDetailController;
 use App\Modules\Cart\Controllers\CartSaveController;
+use App\Modules\Coupon\Controllers\CouponCreateController;
+use App\Modules\Coupon\Controllers\CouponDeleteController;
+use App\Modules\Coupon\Controllers\CouponDetailController;
+use App\Modules\Coupon\Controllers\CouponPaginateController;
+use App\Modules\Coupon\Controllers\CouponUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +164,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::get('/detail/{id}', [ProductReviewDetailController::class, 'get'])->name('product.review.get');
             });
         });
+    });
+
+    Route::prefix('coupon')->group(function () {
+        Route::get('/paginate', [CouponPaginateController::class, 'get'])->name('coupon.paginate');
+        Route::post('/create', [CouponCreateController::class, 'post'])->name('coupon.create');
+        Route::post('/update/{id}', [CouponUpdateController::class, 'post'])->name('coupon.update');
+        Route::delete('/delete/{id}', [CouponDeleteController::class, 'delete'])->name('coupon.delete');
+        Route::get('/detail/{id}', [CouponDetailController::class, 'get'])->name('coupon.get');
     });
 
     Route::post('/auth/logout', [LogoutController::class, 'post', 'as' => 'logout'])->name('logout');
