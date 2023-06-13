@@ -2,7 +2,7 @@
 
 namespace App\Modules\Wishlist\Resources;
 
-use App\Modules\Product\Resources\ProductCollection;
+use App\Modules\Wishlist\Resources\ProductCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class WishlistCollection extends JsonResource

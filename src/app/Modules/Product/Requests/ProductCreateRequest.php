@@ -43,6 +43,7 @@ class ProductCreateRequest extends FormRequest
             'description' => 'required|string',
             'price' => 'required|numeric|gt:0',
             'discount' => 'required|numeric|gte:0',
+            'inventory' => 'required|numeric|gte:0',
             'featured_image' => 'required|image|max:500',
             'image_title' => 'nullable|string|max:500',
             'image_alt' => 'nullable|string|max:500',

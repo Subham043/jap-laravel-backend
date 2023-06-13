@@ -27,9 +27,9 @@ class CartSaveController extends Controller
             );
 
             if($request->data && count($request->data)>0){
-                $cart->products()->sync($request->data);
+                $this->cartService->save_products($cart, $request->data);
             }else{
-                $cart->products()->sync([]);
+                $this->cartService->save_products($cart, []);
             }
 
             return response()->json([

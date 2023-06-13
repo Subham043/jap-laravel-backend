@@ -20,6 +20,7 @@ class Product extends Model
         'description',
         'price',
         'discount',
+        'inventory',
         'featured_image',
         'image_title',
         'image_alt',
@@ -38,6 +39,7 @@ class Product extends Model
         'updated_at' => 'datetime',
         'price' => 'float',
         'discount' => 'float',
+        'inventory' => 'int',
         'is_active' => 'boolean',
         'is_new_arrival' => 'boolean',
         'is_featured' => 'boolean',
@@ -51,6 +53,7 @@ class Product extends Model
         'is_best_sale' => true,
         'price' => 0,
         'discount' => 0,
+        'inventory' => 0,
     ];
 
     public $image_path = 'product';

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('total_price')->default(0)->nullable();
+            $table->bigInteger('sub_total', 500)->default(0)->nullable();
+            $table->bigInteger('total_discount', 500)->default(0)->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });

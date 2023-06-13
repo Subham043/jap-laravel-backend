@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Modules\Product\Resources;
+namespace App\Modules\Wishlist\Resources;
 
 use App\Http\Services\PriceService;
 use App\Modules\Category\Resources\CategoryCollection;
-use App\Modules\ProductImage\Resources\ProductImageCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductCollection extends JsonResource
@@ -28,9 +27,6 @@ class ProductCollection extends JsonResource
             'discounted_price' => $priceService->getDiscountedPrice(),
             'inventory' => $this->inventory,
             'in_stock' => $this->inventory > 0 ? true : false,
-            'meta_title' => $this->meta_title,
-            'meta_keywords' => $this->meta_keywords,
-            'meta_description' => $this->meta_description,
             'featured_image_link' => asset($this->featured_image),
             'image_title' => $this->image_title,
             'image_alt' => $this->image_alt,
@@ -38,7 +34,6 @@ class ProductCollection extends JsonResource
             'is_new_arrival' => $this->is_new_arrival,
             'is_featured' => $this->is_featured,
             'is_best_sale' => $this->is_best_sale,
-            'other_images' => ProductImageCollection::collection($this->other_images),
             'categories' => CategoryCollection::collection($this->categories),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),

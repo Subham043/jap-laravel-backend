@@ -11,7 +11,7 @@ class WishlistService
     {
         $data = Wishlist::with([
             'products' => function($q) {
-                $q->with(['other_images', 'categories']);
+                $q->with(['categories']);
             }
         ])->withCount(['products'])->where('user_id', auth()->user()->id)->first();
         if(!$data){
@@ -24,7 +24,7 @@ class WishlistService
     {
         $wishlist = Wishlist::with([
             'products' => function($q) {
-                $q->with(['other_images', 'categories']);
+                $q->with(['categories']);
             }
         ])->withCount(['products'])->updateOrCreate(['user_id'=>auth()->user()->id],$data);
         return $wishlist;

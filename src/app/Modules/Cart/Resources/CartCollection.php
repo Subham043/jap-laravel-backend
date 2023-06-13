@@ -16,26 +16,13 @@ class CartCollection extends JsonResource
     public function toArray($request)
     {
         $total_quantity = $this->products->sum('pivot.quantity');
-        $sub_total = 0;
-        $total_discount = 0;
-        $total_price = 0;
-        if($this->products_count > 0){
-            foreach ($this->products as $value) {
-                # code...
-                $total_qt_price = $value->price * $value->pivot->quantity;
-                $sub_total = $sub_total + $total_qt_price;
-                $discount = $total_qt_price * ($value->discount/100);
-                $total_discount = $total_discount + $discount;
-                $total_price = $total_price + ($total_qt_price - $discount);
-            }
-        }
         return [
             'id' => $this->id,
             'total_items' => $this->products_count,
             'total_quantity' => $total_quantity,
-            'sub_total' => $sub_total,
-            'total_discount' => $total_discount,
-            'total_price' => $total_price,
+            'sub_total' => $this->sub_total,
+            'total_discount' => $this->total_discount,
+            'total_price' => $this->total_price,
             'products' => ProductCollection::collection($this->products),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
