@@ -2,6 +2,7 @@
 
 namespace App\Modules\Order\Services;
 
+use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
 use App\Enums\PaymentStatus;
 use App\Http\Services\RazorpayService;
@@ -30,7 +31,10 @@ class OrderService
         ->where(function($q){
             $q->where('mode_of_payment', PaymentMode::COD->value)
             ->orWhere(function($query){
-                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)
+                ->where(function($q){
+                    $q->where('payment_status', PaymentStatus::PAID->value)->orWhere('payment_status', PaymentStatus::REFUND->value);
+                });
             });
         })->latest();
         return QueryBuilder::for($query)
@@ -50,11 +54,19 @@ class OrderService
         ->where(function($q){
             $q->where('mode_of_payment', PaymentMode::COD->value)
             ->orWhere(function($query){
-                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)
+                ->where(function($q){
+                    $q->where('payment_status', PaymentStatus::PAID->value)->orWhere('payment_status', PaymentStatus::REFUND->value);
+                });
             });
         })->latest();
         return QueryBuilder::for($query)
+                ->defaultSort('id')
+                ->allowedSorts('id', 'mode_of_payment', 'order_status', 'payment_status')
                 ->allowedFilters([
+                    'mode_of_payment',
+                    'order_status',
+                    'payment_status',
                     AllowedFilter::custom('search', new CommonFilter),
                 ])
                 ->paginate($total)
@@ -75,7 +87,10 @@ class OrderService
         ->where(function($q){
             $q->where('mode_of_payment', PaymentMode::COD->value)
             ->orWhere(function($query){
-                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)
+                ->where(function($q){
+                    $q->where('payment_status', PaymentStatus::PAID->value)->orWhere('payment_status', PaymentStatus::REFUND->value);
+                });
             });
         })
         ->firstOrFail();
@@ -92,13 +107,44 @@ class OrderService
         ])
         ->withCount(['products'])
         ->where('id', $id)
+        ->firstOrFail();
+        return $order;
+    }
+
+    public function update_status(array $data, Order $order): Order
+    {
+        $order->update($data);
+        return $order;
+    }
+
+    public function cancel(string $receipt): Order|null
+    {
+        $order = Order::with([
+            'products' => function($q) {
+                $q->with(['categories']);
+            },
+            'coupon'
+        ])
+        ->withCount(['products'])
+        ->where('receipt', $receipt)
+        ->where('user_id', auth()->user()->id)
         ->where(function($q){
             $q->where('mode_of_payment', PaymentMode::COD->value)
             ->orWhere(function($query){
-                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)
+                ->where(function($q){
+                    $q->where('payment_status', PaymentStatus::PAID->value)->orWhere('payment_status', PaymentStatus::REFUND->value);
+                });
             });
         })
         ->firstOrFail();
+        $order->order_status = OrderStatus::CANCELLED->value;
+        $order->payment_status = PaymentStatus::REFUND->value;
+        if($order->mode_of_payment==PaymentMode::ONLINE && !empty($order->razorpay_payment_id)){
+            $price = $order->coupon_discount > 0 ? $order->total_price - $order->coupon_discount : $order->total_price;
+            (new RazorpayService)->refund($price, $order->razorpay_payment_id);
+        }
+        $order->save();
         return $order;
     }
 

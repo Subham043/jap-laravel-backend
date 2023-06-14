@@ -61,10 +61,14 @@ use App\Modules\Coupon\Controllers\CouponPaginateController;
 use App\Modules\Coupon\Controllers\CouponUpdateController;
 use App\Modules\Order\Controllers\OrderDetailController;
 use App\Modules\Order\Controllers\OrderPaginateController;
+use App\Modules\Order\Controllers\OrderPlacedCancelController;
 use App\Modules\Order\Controllers\OrderPlacedDetailController;
 use App\Modules\Order\Controllers\OrderPlacedPaginateController;
+use App\Modules\Order\Controllers\OrderStatusController;
 use App\Modules\Order\Controllers\PlaceOrderController;
 use App\Modules\Order\Controllers\VerifyPaymentController;
+use App\Modules\Product\Controllers\MainProductDetailController;
+use App\Modules\Product\Controllers\MainProductPaginateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +99,11 @@ Route::prefix('/email/verify')->group(function () {
 
 Route::prefix('enquiry')->group(function () {
     Route::post('/create', [EnquiryCreateController::class, 'post'])->name('enquiry.create');
+});
+
+Route::prefix('product/main')->group(function () {
+    Route::get('/paginate', [MainProductPaginateController::class, 'get'])->name('product.paginate.main');
+    Route::get('/detail/{slug}', [MainProductDetailController::class, 'get'])->name('product.detail.main');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -138,9 +147,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/place', [PlaceOrderController::class, 'post'])->name('order.place');
         Route::get('/placed/paginate', [OrderPlacedPaginateController::class, 'get'])->name('order.placed.paginate');
         Route::get('/placed/detail/{receipt}', [OrderPlacedDetailController::class, 'get'])->name('order.placed.detail');
+        Route::get('/placed/cancel/{receipt}', [OrderPlacedCancelController::class, 'get'])->name('order.cancel.detail');
         Route::post('/verify-payment', [VerifyPaymentController::class, 'post'])->name('order.verify_payment');
         Route::get('/paginate', [OrderPaginateController::class, 'get'])->name('order.paginate');
         Route::get('/detail/{id}', [OrderDetailController::class, 'get'])->name('order.detail');
+        Route::post('/status/{id}', [OrderStatusController::class, 'post'])->name('order.status');
     });
 
     Route::prefix('enquiry')->group(function () {
@@ -160,6 +171,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('product')->group(function () {
+        Route::get('/paginate', [MainProductPaginateController::class, 'get'])->name('product.paginate');
         Route::get('/paginate', [ProductPaginateController::class, 'get'])->name('product.paginate');
         Route::post('/create', [ProductCreateController::class, 'post'])->name('product.create');
         Route::post('/update/{id}', [ProductUpdateController::class, 'post'])->name('product.update');

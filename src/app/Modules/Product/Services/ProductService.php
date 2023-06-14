@@ -23,7 +23,58 @@ class ProductService
     {
         $query = Product::with(['categories', 'other_images', 'reviews'])->latest();
         return QueryBuilder::for($query)
+                ->allowedIncludes(['categories', 'reviews'])
+                ->defaultSort('id')
+                ->allowedSorts('id', 'name', 'price', 'discount')
                 ->allowedFilters([
+                    'is_new_arrival',
+                    'is_featured',
+                    'is_best_sale',
+                    AllowedFilter::callback('has_categories', function (Builder $query, $value) {
+                        $query->whereHas('categories', function($q) use($value) {
+                            $q->where('name', 'LIKE', '%' . $value . '%');
+                        });
+                    }),
+                    AllowedFilter::callback('has_reviews', function (Builder $query, $value) {
+                        $query->whereHas('reviews', function($q) use($value) {
+                            $q->where('star', $value);
+                        });
+                    }),
+                    AllowedFilter::custom('search', new CommonFilter),
+                ])
+                ->paginate($total)
+                ->appends(request()->query());
+    }
+
+    public function main_paginate(Int $total = 10): LengthAwarePaginator
+    {
+        $query = Product::with([
+                'categories' => function($q){
+                    $q->where('is_active', true);
+                },
+                'other_images',
+                'reviews' => function($q){
+                    $q->where('is_approved', true);
+                }
+            ])->where('is_active', true)->latest();
+        return QueryBuilder::for($query)
+                ->allowedIncludes(['categories', 'reviews'])
+                ->defaultSort('id')
+                ->allowedSorts('id', 'name', 'price', 'discount')
+                ->allowedFilters([
+                    'is_new_arrival',
+                    'is_featured',
+                    'is_best_sale',
+                    AllowedFilter::callback('has_categories', function (Builder $query, $value) {
+                        $query->whereHas('categories', function($q) use($value) {
+                            $q->where('is_active', true)->where('name', 'LIKE', '%' . $value . '%');
+                        });
+                    }),
+                    AllowedFilter::callback('has_reviews', function (Builder $query, $value) {
+                        $query->whereHas('reviews', function($q) use($value) {
+                            $q->where('is_approved', true)->where('star', $value);
+                        });
+                    }),
                     AllowedFilter::custom('search', new CommonFilter),
                 ])
                 ->paginate($total)
@@ -37,7 +88,15 @@ class ProductService
 
     public function getBySlug(String $slug): Product
     {
-        return Product::with(['categories', 'other_images', 'reviews'])->where('slug', $slug)->firstOrFail();
+        return Product::with([
+            'categories' => function($q){
+                $q->where('is_active', true);
+            },
+            'other_images',
+            'reviews' => function($q){
+                $q->where('is_approved', true);
+            }
+        ])->where('slug', $slug)->where('is_active', true)->firstOrFail();
     }
 
     public function create(array $data): Product
