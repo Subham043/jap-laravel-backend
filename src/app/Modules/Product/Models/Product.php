@@ -4,6 +4,7 @@ namespace App\Modules\Product\Models;
 
 use App\Modules\Cart\Models\Cart;
 use App\Modules\Category\Models\Category;
+use App\Modules\Order\Models\Order;
 use App\Modules\ProductImage\Models\ProductImage;
 use App\Modules\ProductReview\Models\ProductReview;
 use App\Modules\Wishlist\Models\Wishlist;
@@ -100,5 +101,10 @@ class Product extends Model
     public function cart()
     {
         return $this->belongsToMany(Cart::class, 'cart_products', 'product_id', 'cart_id');
+    }
+
+    public function order()
+    {
+        return $this->belongsToMany(Order::class, 'order_products', 'product_id', 'order_id');
     }
 }

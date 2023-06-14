@@ -2,8 +2,11 @@
 
 namespace App\Modules\Cart\Requests;
 
+use App\Enums\PaymentMode;
+use App\Enums\PaymentStatus;
 use App\Modules\Cart\Services\CartService;
 use App\Modules\Coupon\Models\Coupon;
+use App\Modules\Order\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Purify\Facades\Purify;
@@ -42,9 +45,23 @@ class CouponRequest extends FormRequest
                         $fail("Please add products to your cart in order to use coupon.");
                     }
                     $coupon = Coupon::where('code', $value)->first();
-                    // if ( empty($product->inventory) ||$product->inventory == 0) {
-                    //     $fail("The {$attribute} is out of stock.");
-                    // }
+                    if (empty($coupon)) {
+                        $fail("The coupon code is invalid.");
+                    }
+                    if(!empty($coupon->maximum_number_of_use)){
+                        $order = Order::where('user_id', auth()->user()->id)
+                        ->where('coupon_id', $coupon->id)
+                        ->where(function($q){
+                            $q->where('mode_of_payment', PaymentMode::COD->value)
+                            ->orWhere(function($query){
+                                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+                            });
+                        })
+                        ->get();
+                        if ($order->count()>=$coupon->maximum_number_of_use) {
+                            $fail("The coupon code has already been used {$coupon->maximum_number_of_use} times.");
+                        }
+                    }
                 },
             ],
         ];

@@ -59,6 +59,8 @@ use App\Modules\Coupon\Controllers\CouponDeleteController;
 use App\Modules\Coupon\Controllers\CouponDetailController;
 use App\Modules\Coupon\Controllers\CouponPaginateController;
 use App\Modules\Coupon\Controllers\CouponUpdateController;
+use App\Modules\Order\Controllers\PlaceOrderController;
+use App\Modules\Order\Controllers\VerifyPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,6 +128,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [CartSaveController::class, 'post'])->name('cart.create');
         Route::get('/', [CartDetailController::class, 'get'])->name('cart.get');
         Route::post('/apply-coupon', [ApplyCouponController::class, 'post'])->name('coupon.apply');
+    });
+
+    Route::prefix('order')->group(function () {
+        Route::post('/place', [PlaceOrderController::class, 'post'])->name('order.place');
+        Route::post('/verify-payment', [VerifyPaymentController::class, 'post'])->name('order.verify_payment');
     });
 
     Route::prefix('enquiry')->group(function () {

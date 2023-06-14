@@ -41,4 +41,9 @@ class Coupon extends Model
     {
         return $this->hasOne(Cart::class, 'coupon_id');
     }
+
+    public function order()
+    {
+        return $this->hasOne(Order::class, 'coupon_id');
+    }
 }

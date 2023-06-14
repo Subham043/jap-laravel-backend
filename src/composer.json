@@ -17,6 +17,9 @@
         "spatie/laravel-query-builder": "^5.2",
         "spatie/laravel-sitemap": "^6.2",
         "stevebauman/purify": "^6.0",
+        "barryvdh/laravel-dompdf": "^2.0",
+        "razorpay/razorpay": "^2.8",
+        "webpatser/laravel-uuid": "^4.0",
         "laravel/tinker": "^2.8"
     },
     "require-dev": {
