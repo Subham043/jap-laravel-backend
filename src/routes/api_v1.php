@@ -59,6 +59,8 @@ use App\Modules\Coupon\Controllers\CouponDeleteController;
 use App\Modules\Coupon\Controllers\CouponDetailController;
 use App\Modules\Coupon\Controllers\CouponPaginateController;
 use App\Modules\Coupon\Controllers\CouponUpdateController;
+use App\Modules\Order\Controllers\OrderPlacedDetailController;
+use App\Modules\Order\Controllers\OrderPlacedPaginateController;
 use App\Modules\Order\Controllers\PlaceOrderController;
 use App\Modules\Order\Controllers\VerifyPaymentController;
 
@@ -132,6 +134,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('order')->group(function () {
         Route::post('/place', [PlaceOrderController::class, 'post'])->name('order.place');
+        Route::get('/placed/paginate', [OrderPlacedPaginateController::class, 'get'])->name('order.placed.paginate');
+        Route::get('/placed/detail/{receipt}', [OrderPlacedDetailController::class, 'get'])->name('order.placed.detail');
         Route::post('/verify-payment', [VerifyPaymentController::class, 'post'])->name('order.verify_payment');
     });
 

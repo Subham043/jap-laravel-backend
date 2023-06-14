@@ -8,10 +8,53 @@ use App\Http\Services\RazorpayService;
 use App\Modules\Cart\Services\CartService;
 use App\Modules\Order\Models\Order;
 use App\Modules\Product\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Spatie\QueryBuilder\QueryBuilder;
 use Webpatser\Uuid\Uuid;
 
 class OrderService
 {
+    public function placed_paginate(Int $total = 10): LengthAwarePaginator
+    {
+        $query = Order::with([
+            'products' => function($q) {
+                $q->with(['categories']);
+            },
+            'coupon'
+        ])
+        ->withCount(['products'])
+        ->where('user_id', auth()->user()->id)
+        ->where(function($q){
+            $q->where('mode_of_payment', PaymentMode::COD->value)
+            ->orWhere(function($query){
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+            });
+        })->latest();
+        return QueryBuilder::for($query)
+                ->paginate($total)
+                ->appends(request()->query());
+    }
+    public function getByReceipt(string $receipt): Order|null
+    {
+        $order = Order::with([
+            'products' => function($q) {
+                $q->with(['categories']);
+            },
+            'coupon'
+        ])
+        ->withCount(['products'])
+        ->where('receipt', $receipt)
+        ->where('user_id', auth()->user()->id)
+        ->where(function($q){
+            $q->where('mode_of_payment', PaymentMode::COD->value)
+            ->orWhere(function($query){
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+            });
+        })
+        ->firstOrFail();
+        return $order;
+    }
+
     public function verify_payment(array $data): Order
     {
         $order = Order::with([
