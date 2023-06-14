@@ -72,9 +72,9 @@ class Order extends Model
         'total_discount' => 0,
         'sub_total' => 0,
         'coupon_discount' => 0,
-        'mode_of_payment' => PaymentMode::COD->value,
-        'order_status' => OrderStatus::PROCESSING->value,
-        'payment_status' => PaymentStatus::PENDING->value,
+        'mode_of_payment' => PaymentMode::COD,
+        'order_status' => OrderStatus::PROCESSING,
+        'payment_status' => PaymentStatus::PENDING,
     ];
 
     public function user()
