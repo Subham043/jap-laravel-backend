@@ -11,6 +11,9 @@ use App\Modules\Product\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\QueryBuilder;
 use Webpatser\Uuid\Uuid;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderService
 {
@@ -34,6 +37,30 @@ class OrderService
                 ->paginate($total)
                 ->appends(request()->query());
     }
+
+    public function paginate(Int $total = 10): LengthAwarePaginator
+    {
+        $query = Order::with([
+            'products' => function($q) {
+                $q->with(['categories']);
+            },
+            'coupon'
+        ])
+        ->withCount(['products'])
+        ->where(function($q){
+            $q->where('mode_of_payment', PaymentMode::COD->value)
+            ->orWhere(function($query){
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+            });
+        })->latest();
+        return QueryBuilder::for($query)
+                ->allowedFilters([
+                    AllowedFilter::custom('search', new CommonFilter),
+                ])
+                ->paginate($total)
+                ->appends(request()->query());
+    }
+
     public function getByReceipt(string $receipt): Order|null
     {
         $order = Order::with([
@@ -45,6 +72,26 @@ class OrderService
         ->withCount(['products'])
         ->where('receipt', $receipt)
         ->where('user_id', auth()->user()->id)
+        ->where(function($q){
+            $q->where('mode_of_payment', PaymentMode::COD->value)
+            ->orWhere(function($query){
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)->where('payment_status', PaymentStatus::PAID->value);
+            });
+        })
+        ->firstOrFail();
+        return $order;
+    }
+
+    public function getById(string $id): Order|null
+    {
+        $order = Order::with([
+            'products' => function($q) {
+                $q->with(['categories']);
+            },
+            'coupon'
+        ])
+        ->withCount(['products'])
+        ->where('id', $id)
         ->where(function($q){
             $q->where('mode_of_payment', PaymentMode::COD->value)
             ->orWhere(function($query){
@@ -138,4 +185,46 @@ class OrderService
         $product->save();
     }
 
+}
+
+class CommonFilter implements Filter
+{
+    public function __invoke(Builder $query, $value, string $property)
+    {
+        $query->where('sub_total', 'LIKE', '%' . $value . '%')
+        ->orWhere('total_price', 'LIKE', '%' . $value . '%')
+        ->orWhere('total_discount', 'LIKE', '%' . $value . '%')
+        ->orWhere('coupon_discount', 'LIKE', '%' . $value . '%')
+        ->orWhere('coupon_name', 'LIKE', '%' . $value . '%')
+        ->orWhere('coupon_code', 'LIKE', '%' . $value . '%')
+        ->orWhere('coupon_discount_percentage', 'LIKE', '%' . $value . '%')
+        ->orWhere('coupon_maximum_discount', 'LIKE', '%' . $value . '%')
+        ->orWhere('coupon_maximum_use', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_first_name', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_last_name', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_email', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_phone', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_country', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_state', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_city', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_pin', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_address_1', 'LIKE', '%' . $value . '%')
+        ->orWhere('billing_address_2', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_first_name', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_last_name', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_email', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_phone', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_country', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_state', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_city', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_pin', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_address_1', 'LIKE', '%' . $value . '%')
+        ->orWhere('shipping_address_2', 'LIKE', '%' . $value . '%')
+        ->orWhere('order_notes', 'LIKE', '%' . $value . '%')
+        ->orWhere('mode_of_payment', 'LIKE', '%' . $value . '%')
+        ->orWhere('order_status', 'LIKE', '%' . $value . '%')
+        ->orWhere('payment_status', 'LIKE', '%' . $value . '%')
+        ->orWhere('razorpay_order_id', 'LIKE', '%' . $value . '%')
+        ->orWhere('receipt', 'LIKE', '%' . $value . '%');
+    }
 }
