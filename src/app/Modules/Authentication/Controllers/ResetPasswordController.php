@@ -11,11 +11,14 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
 
-
 class ResetPasswordController extends Controller
 {
+    public function get($token){
+
+        return view('reset_password');
+    }
+
     public function post(ResetPasswordPostRequest $request, $token){
-        //code...
 
         $status = Password::reset(
             [...$request->safe()->only('email', 'password', 'password_confirmation'), 'token' => $token],
@@ -31,13 +34,9 @@ class ResetPasswordController extends Controller
         );
         if($status === Password::PASSWORD_RESET){
             (new RateLimitService($request))->clearRateLimit();
-            return response()->json([
-                'message' => __($status),
-            ], 200);
+            return redirect(route('success'))->with('success_status', __($status));
         }
-        return response()->json([
-            'message' => __($status),
-        ], 400);
+        return back()->with(['error_status' => __($status)]);
 
     }
 }

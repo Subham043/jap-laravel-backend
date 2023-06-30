@@ -29,7 +29,7 @@ class ResetPasswordPostRequest extends FormRequest
     {
         return [
             'email' => ['required','string','email:rfc,dns','max:255','exists:App\Modules\Authentication\Models\User,email'],
-            'confirm_password' => 'string|min:8|required_with:password|same:password',
+            'password_confirmation' => 'string|min:8|required_with:password|same:password',
             'password' => ['required',
                 'string',
                 Password::min(8)

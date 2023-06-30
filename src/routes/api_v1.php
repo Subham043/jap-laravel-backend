@@ -10,7 +10,6 @@ use App\Modules\Authentication\Controllers\LoginController;
 use App\Modules\Authentication\Controllers\LogoutController;
 use App\Modules\Authentication\Controllers\ProfileController;
 use App\Modules\Authentication\Controllers\RegisterController;
-use App\Modules\Authentication\Controllers\ResetPasswordController;
 use App\Modules\Authentication\Controllers\VerifyRegisteredUserController;
 use App\Modules\Cart\Controllers\ApplyCouponController;
 use App\Modules\Role\Controllers\PermissionController;
@@ -89,7 +88,6 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [LoginController::class, 'post'])->name('login');
     Route::post('/register', [RegisterController::class, 'post'])->name('register');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'post'])->name('forgot_password');
-    Route::post('/reset-password/{token}', [ResetPasswordController::class, 'post'])->name('reset_password')->middleware('signed');
 });
 
 Route::prefix('/email/verify')->group(function () {

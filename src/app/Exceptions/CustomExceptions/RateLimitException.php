@@ -43,9 +43,12 @@ class RateLimitException extends Exception
      */
     public function render(Request $request): Response|RedirectResponse|JsonResponse
     {
-        return response()->json([
-            'message' => $this->showMessage(),
-        ], $this->showStatusCode());
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => $this->showMessage(),
+            ], $this->showStatusCode());
+        }
+        return redirect()->back()->with('error_status', $this->showMessage());
     }
 
 

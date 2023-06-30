@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Authentication\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/success', function () {
+    return view('success');
+})->name('success');
+
+Route::prefix('auth')->group(function () {
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'get'])->name('reset_password')->middleware('signed');
+    Route::post('/reset-password/{token}', [ResetPasswordController::class, 'post'])->name('reset_password.post')->middleware('signed');
 });

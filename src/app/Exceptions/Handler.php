@@ -35,39 +35,60 @@ class Handler extends ExceptionHandler
             //
         });
         $this->renderable(function (NotFoundHttpException $e, Request $request) {
-            return response()->json([
-                'message' => 'Data not found.'
-            ], $e->getStatusCode());
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Data not found.'
+                ], $e->getStatusCode());
+            }
+            return redirect()->back()->with('error_status', 'Data not found.');
         });
         $this->renderable(function (ThrottleRequestsException $e, Request $request) {
-            return response()->json([
-                'message' => 'Too many attempts, please try again after sometime'
-            ], $e->getStatusCode());
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Too many attempts, please try again after sometime'
+                ], $e->getStatusCode());
+            }
+            return redirect()->back()->with('error_status', 'Too many attempts, please try again after sometime');
         });
         $this->renderable(function (MethodNotAllowedHttpException $e, Request $request) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], $e->getStatusCode());
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], $e->getStatusCode());
+            }
+            return redirect()->back()->with('error_status', $e->getMessage());
         });
         $this->renderable(function (UnauthorizedException $e, Request $request) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], $e->getStatusCode());
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], $e->getStatusCode());
+            }
+            return redirect()->back()->with('error_status', $e->getMessage());
         });
         $this->renderable(function (HttpException $e, Request $request) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], $e->getStatusCode());
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], $e->getStatusCode());
+            }
+            return redirect()->back()->with('error_status', $e->getMessage());
         });
         $this->renderable(function (ModelNotFoundException $e, Request $request) {
-            return response()->json([
-                'message' => "Data not found."
-            ], 404);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => "Data not found."
+                ], 404);
+            }
+            return redirect()->back()->with('error_status', "Data not found.");
         });
         $this->renderable(function (DecryptException $e, Request $request) {
-            return response()->json([
-                'message' => "Oops! You don't have the permission to access this!"
-            ], 404);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => "Oops! You don't have the permission to access this!"
+                ], 404);
+            }
+            return redirect()->back()->with('error_status', "Oops! You don't have the permission to access this!");
         });
     }
 }
