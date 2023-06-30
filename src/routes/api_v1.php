@@ -58,6 +58,8 @@ use App\Modules\Coupon\Controllers\CouponDeleteController;
 use App\Modules\Coupon\Controllers\CouponDetailController;
 use App\Modules\Coupon\Controllers\CouponPaginateController;
 use App\Modules\Coupon\Controllers\CouponUpdateController;
+use App\Modules\DeliveryCharge\Controllers\DeliveryChargeDetailController;
+use App\Modules\DeliveryCharge\Controllers\DeliveryChargeSaveController;
 use App\Modules\Order\Controllers\OrderDetailController;
 use App\Modules\Order\Controllers\OrderPaginateController;
 use App\Modules\Order\Controllers\OrderPlacedCancelController;
@@ -68,6 +70,8 @@ use App\Modules\Order\Controllers\PlaceOrderController;
 use App\Modules\Order\Controllers\VerifyPaymentController;
 use App\Modules\Product\Controllers\MainProductDetailController;
 use App\Modules\Product\Controllers\MainProductPaginateController;
+use App\Modules\Tax\Controllers\TaxDetailController;
+use App\Modules\Tax\Controllers\TaxSaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,6 +143,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [CartSaveController::class, 'post'])->name('cart.create');
         Route::get('/', [CartDetailController::class, 'get'])->name('cart.get');
         Route::post('/apply-coupon', [ApplyCouponController::class, 'post'])->name('coupon.apply');
+    });
+
+    Route::prefix('tax')->group(function () {
+        Route::post('/', [TaxSaveController::class, 'post'])->name('tax.create');
+        Route::get('/', [TaxDetailController::class, 'get'])->name('tax.get');
+    });
+
+    Route::prefix('delivery-charge')->group(function () {
+        Route::post('/', [DeliveryChargeSaveController::class, 'post'])->name('delivery_charge.create');
+        Route::get('/', [DeliveryChargeDetailController::class, 'get'])->name('delivery_charge.get');
     });
 
     Route::prefix('order')->group(function () {
