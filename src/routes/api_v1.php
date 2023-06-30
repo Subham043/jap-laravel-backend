@@ -53,6 +53,8 @@ use App\Modules\Wishlist\Controllers\WishlistDetailController;
 use App\Modules\Wishlist\Controllers\WishlistSaveController;
 use App\Modules\Cart\Controllers\CartDetailController;
 use App\Modules\Cart\Controllers\CartSaveController;
+use App\Modules\Category\Controllers\MainCategoryDetailController;
+use App\Modules\Category\Controllers\MainCategoryPaginateController;
 use App\Modules\Coupon\Controllers\CouponCreateController;
 use App\Modules\Coupon\Controllers\CouponDeleteController;
 use App\Modules\Coupon\Controllers\CouponDetailController;
@@ -106,6 +108,11 @@ Route::prefix('enquiry')->group(function () {
 Route::prefix('product/main')->group(function () {
     Route::get('/paginate', [MainProductPaginateController::class, 'get'])->name('product.paginate.main');
     Route::get('/detail/{slug}', [MainProductDetailController::class, 'get'])->name('product.detail.main');
+});
+
+Route::prefix('category/main')->group(function () {
+    Route::get('/paginate', [MainCategoryPaginateController::class, 'get'])->name('category.paginate.main');
+    Route::get('/detail/{slug}', [MainCategoryDetailController::class, 'get'])->name('category.detail.main');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -183,7 +190,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('product')->group(function () {
-        Route::get('/paginate', [MainProductPaginateController::class, 'get'])->name('product.paginate');
         Route::get('/paginate', [ProductPaginateController::class, 'get'])->name('product.paginate');
         Route::post('/create', [ProductCreateController::class, 'post'])->name('product.create');
         Route::post('/update/{id}', [ProductUpdateController::class, 'post'])->name('product.update');

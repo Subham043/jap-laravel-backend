@@ -30,6 +30,17 @@ class CategoryService
                 ->appends(request()->query());
     }
 
+    public function main_paginate(Int $total = 10): LengthAwarePaginator
+    {
+        $query = Category::where('is_active', true)->latest();
+        return QueryBuilder::for($query)
+                ->allowedFilters([
+                    AllowedFilter::custom('search', new CommonFilter),
+                ])
+                ->paginate($total)
+                ->appends(request()->query());
+    }
+
     public function getById(Int $id): Category|null
     {
         return Category::findOrFail($id);
@@ -37,7 +48,7 @@ class CategoryService
 
     public function getBySlug(String $slug): Category
     {
-        return Category::where('slug', $slug)->firstOrFail();
+        return Category::where('is_active', true)->where('slug', $slug)->firstOrFail();
     }
 
     public function create(array $data): Category
