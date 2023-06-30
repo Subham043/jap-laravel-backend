@@ -16,16 +16,19 @@ class OrderCollection extends JsonResource
     public function toArray($request)
     {
         $total_quantity = $this->products->sum('pivot.quantity');
-        $total_price_with_coupon = $this->coupon_discount > 0 ? $this->total_price - $this->coupon_discount : $this->total_price;
+        $total_price_with_coupon = $this->coupon_discount > 0 ? ($this->total_price + $this->gst_charge + $this->delivery_charge) - $this->coupon_discount : ($this->total_price + $this->gst_charge + $this->delivery_charge);
         return [
             'id' => $this->id,
             'total_items' => $this->products()->count(),
             'total_quantity' => $total_quantity,
             'sub_total' => $this->sub_total,
             'total_discount' => $this->total_discount,
-            'total_price_excluding_coupon' => $this->total_price,
-            'total_price_with_coupon' => $total_price_with_coupon,
+            'total_price_without_gst_delivery_charge' => $this->total_price,
+            'gst_charge' => $this->gst_charge,
+            'delivery_charge' => $this->delivery_charge,
+            'total_price_with_gst_delivery_charge' => ($this->total_price + $this->gst_charge + $this->delivery_charge),
             'coupon_discount' => $this->coupon_discount,
+            'total_price_with_coupon_dicount' => round($total_price_with_coupon, 2),
             'coupon' => CouponCollection::make($this->coupon),
             'products' => ProductCollection::collection($this->products),
             'coupon_name' => $this->coupon_name,

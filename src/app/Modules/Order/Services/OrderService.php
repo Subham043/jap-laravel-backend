@@ -186,6 +186,8 @@ class OrderService
         $order->sub_total = $cart->sub_total;
         $order->total_discount = $cart->total_discount;
         $order->coupon_discount = $cart->coupon_discount;
+        $order->gst_charge = $cart->gst_charge;
+        $order->delivery_charge = $cart->delivery_charge;
         $order->coupon_id = $cart->coupon_id;
         $order->total_price = $cart->total_price;
         $order->receipt = Uuid::generate(4)->string;

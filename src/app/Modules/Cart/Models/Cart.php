@@ -15,6 +15,8 @@ class Cart extends Model
         'sub_total',
         'total_discount',
         'coupon_discount',
+        'gst_charge',
+        'delivery_charge',
         'coupon_id',
         'user_id',
     ];
@@ -26,6 +28,8 @@ class Cart extends Model
         'total_discount' => 'float',
         'total_price' => 'float',
         'coupon_discount' => 'float',
+        'gst_charge' => 'float',
+        'delivery_charge' => 'float',
     ];
 
     protected $attributes = [
@@ -33,6 +37,8 @@ class Cart extends Model
         'total_discount' => 0,
         'sub_total' => 0,
         'coupon_discount' => 0,
+        'gst_charge' => 0,
+        'delivery_charge' => 0,
     ];
 
     public function user()
