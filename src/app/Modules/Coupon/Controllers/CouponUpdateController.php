@@ -13,7 +13,7 @@ class CouponUpdateController extends Controller
 
     public function __construct(CouponService $couponService)
     {
-        $this->middleware('permission:edit categories', ['only' => ['post']]);
+        $this->middleware('permission:edit coupons', ['only' => ['post']]);
         $this->couponService = $couponService;
     }
 

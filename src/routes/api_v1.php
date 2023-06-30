@@ -70,6 +70,11 @@ use App\Modules\Order\Controllers\OrderPlacedPaginateController;
 use App\Modules\Order\Controllers\OrderStatusController;
 use App\Modules\Order\Controllers\PlaceOrderController;
 use App\Modules\Order\Controllers\VerifyPaymentController;
+use App\Modules\Pincode\Controllers\PincodeCreateController;
+use App\Modules\Pincode\Controllers\PincodeDeleteController;
+use App\Modules\Pincode\Controllers\PincodeDetailController;
+use App\Modules\Pincode\Controllers\PincodePaginateController;
+use App\Modules\Pincode\Controllers\PincodeUpdateController;
 use App\Modules\Product\Controllers\MainProductDetailController;
 use App\Modules\Product\Controllers\MainProductPaginateController;
 use App\Modules\Tax\Controllers\TaxDetailController;
@@ -219,6 +224,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/update/{id}', [CouponUpdateController::class, 'post'])->name('coupon.update');
         Route::delete('/delete/{id}', [CouponDeleteController::class, 'delete'])->name('coupon.delete');
         Route::get('/detail/{id}', [CouponDetailController::class, 'get'])->name('coupon.get');
+    });
+
+    Route::prefix('pincode')->group(function () {
+        Route::get('/paginate', [PincodePaginateController::class, 'get'])->name('pincode.paginate');
+        Route::post('/create', [PincodeCreateController::class, 'post'])->name('pincode.create');
+        Route::post('/update/{id}', [PincodeUpdateController::class, 'post'])->name('pincode.update');
+        Route::delete('/delete/{id}', [PincodeDeleteController::class, 'delete'])->name('pincode.delete');
+        Route::get('/detail/{id}', [PincodeDetailController::class, 'get'])->name('pincode.get');
     });
 
     Route::post('/auth/logout', [LogoutController::class, 'post', 'as' => 'logout'])->name('logout');

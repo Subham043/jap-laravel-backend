@@ -12,7 +12,7 @@ class CouponDetailController extends Controller
 
     public function __construct(CouponService $couponService)
     {
-        $this->middleware('permission:list categories', ['only' => ['get']]);
+        $this->middleware('permission:list coupons', ['only' => ['get']]);
         $this->couponService = $couponService;
     }
 
