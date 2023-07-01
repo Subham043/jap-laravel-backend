@@ -68,6 +68,20 @@ class OrderRequest extends FormRequest
                 function (string $attribute, mixed $value, Closure $fail) {
                     $product = Product::findOrFail($value);
                     $index = explode('.', $attribute)[1];
+                    if($product->pincodes->count()>0){
+                        $availability = false;
+                        foreach ($product->pincodes as $key => $value) {
+                            # code...
+                            if($this->billing_pin >= $value->min_pincode && $this->billing_pin <= $value->max_pincode){
+                                $availability = true;
+                                break;
+                            }
+                        }
+                        if(!$availability){
+                            $fail("The {$attribute} is not deliverable for the given pincode.");
+                        }
+                    }
+
                     if ( empty($product->inventory) || $product->inventory == 0) {
                         $fail("The {$attribute} is out of stock.");
                     }
