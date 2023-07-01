@@ -77,6 +77,7 @@ use App\Modules\Pincode\Controllers\PincodePaginateController;
 use App\Modules\Pincode\Controllers\PincodeUpdateController;
 use App\Modules\Product\Controllers\MainProductDetailController;
 use App\Modules\Product\Controllers\MainProductPaginateController;
+use App\Modules\Product\Controllers\MainProductPincodeController;
 use App\Modules\Tax\Controllers\TaxDetailController;
 use App\Modules\Tax\Controllers\TaxSaveController;
 
@@ -113,6 +114,7 @@ Route::prefix('enquiry')->group(function () {
 Route::prefix('product/main')->group(function () {
     Route::get('/paginate', [MainProductPaginateController::class, 'get'])->name('product.paginate.main');
     Route::get('/detail/{slug}', [MainProductDetailController::class, 'get'])->name('product.detail.main');
+    Route::post('/pincode/{slug}', [MainProductPincodeController::class, 'post'])->name('product.pincode.main');
 });
 
 Route::prefix('category/main')->group(function () {

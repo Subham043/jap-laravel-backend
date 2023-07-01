@@ -5,6 +5,7 @@ namespace App\Modules\Product\Models;
 use App\Modules\Cart\Models\Cart;
 use App\Modules\Category\Models\Category;
 use App\Modules\Order\Models\Order;
+use App\Modules\Pincode\Models\Pincode;
 use App\Modules\ProductImage\Models\ProductImage;
 use App\Modules\ProductReview\Models\ProductReview;
 use App\Modules\Wishlist\Models\Wishlist;
@@ -106,5 +107,10 @@ class Product extends Model
     public function order()
     {
         return $this->belongsToMany(Order::class, 'order_products', 'product_id', 'order_id');
+    }
+
+    public function pincodes()
+    {
+        return $this->belongsToMany(Pincode::class, 'product_pincodes', 'product_id', 'pincode_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Pincode\Models;
 
+use App\Modules\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class Pincode extends Model
@@ -25,5 +26,10 @@ class Pincode extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id')->withDefault();
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_pincodes', 'pincode_id', 'product_id');
     }
 }

@@ -22,12 +22,16 @@ class ProductUpdateController extends Controller
         try {
             //code...
             $product = $this->productService->update(
-                [...$request->safe()->except(['featured_image', 'category'])],
+                [...$request->safe()->except(['featured_image', 'category', 'pincode'])],
                 $product
             );
 
             if($request->category && count($request->category)>0){
                 $product->categories()->sync($request->category);
+            }
+
+            if($request->pincode && count($request->pincode)>0){
+                $product->pincodes()->sync($request->pincode);
             }
 
             if($request->hasFile('featured_image')){

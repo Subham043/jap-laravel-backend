@@ -23,13 +23,17 @@ class ProductCreateController extends Controller
             //code...
             $product = $this->productService->create(
                 [
-                    ...$request->safe()->except(['featured_image', 'category']),
+                    ...$request->safe()->except(['featured_image', 'category', 'pincode']),
                     'user_id' => auth()->user()->id
                 ]
             );
 
             if($request->category && count($request->category)>0){
                 $product->categories()->sync($request->category);
+            }
+
+            if($request->pincode && count($request->pincode)>0){
+                $product->pincodes()->sync($request->pincode);
             }
 
             if($request->hasFile('featured_image')){
