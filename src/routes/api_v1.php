@@ -78,6 +78,7 @@ use App\Modules\Pincode\Controllers\PincodeUpdateController;
 use App\Modules\Product\Controllers\MainProductDetailController;
 use App\Modules\Product\Controllers\MainProductPaginateController;
 use App\Modules\Product\Controllers\MainProductPincodeController;
+use App\Modules\Product\Controllers\ProductExcelUploadController;
 use App\Modules\Tax\Controllers\TaxDetailController;
 use App\Modules\Tax\Controllers\TaxSaveController;
 
@@ -202,6 +203,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/update/{id}', [ProductUpdateController::class, 'post'])->name('product.update');
         Route::delete('/delete/{id}', [ProductDeleteController::class, 'delete'])->name('product.delete');
         Route::get('/detail/{id}', [ProductDetailController::class, 'get'])->name('product.get');
+        Route::post('/excel/upload', [ProductExcelUploadController::class, 'post'])->name('product.excel_upload');
         Route::prefix('{product_id}')->group(function () {
             Route::prefix('images')->group(function () {
                 Route::get('/paginate', [ProductImagePaginateController::class, 'get'])->name('product.image.paginate');
