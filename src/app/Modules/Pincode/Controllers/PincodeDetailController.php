@@ -12,7 +12,7 @@ class PincodeDetailController extends Controller
 
     public function __construct(PincodeService $pincodeService)
     {
-        $this->middleware('permission:list categories', ['only' => ['get']]);
+        $this->middleware('permission:list pincodes', ['only' => ['get']]);
         $this->pincodeService = $pincodeService;
     }
 
