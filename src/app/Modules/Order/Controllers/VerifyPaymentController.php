@@ -2,10 +2,13 @@
 
 namespace App\Modules\Order\Controllers;
 
+use App\Enums\PaymentMode;
 use App\Http\Controllers\Controller;
+use App\Modules\Order\Jobs\SendInvoiceEmailJob;
 use App\Modules\Order\Requests\VerifyPaymentRequest;
 use App\Modules\Order\Resources\OrderCollection;
 use App\Modules\Order\Services\OrderService;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VerifyPaymentController extends Controller
 {
@@ -21,6 +24,15 @@ class VerifyPaymentController extends Controller
         try {
             //code...
             $order = $this->orderService->verify_payment($request->validated());
+
+            if($order->mode_of_payment == PaymentMode::ONLINE){
+                $data = [
+                    'order' => $order,
+                ];
+                $pdf = Pdf::loadView('pdf.invoice', $data)->setPaper('a4', 'landscape')->setOptions(['defaultFont' => 'sans-serif']);
+                $pdf->save(storage_path('app/public/invoices/').$order->receipt.'.pdf');
+                dispatch(new SendInvoiceEmailJob(auth()->user()->email, $order));
+            }
 
             return response()->json([
                 'message' => "Payment done successfully.",

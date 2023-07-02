@@ -2,10 +2,13 @@
 
 namespace App\Modules\Order\Controllers;
 
+use App\Enums\PaymentMode;
 use App\Http\Controllers\Controller;
+use App\Modules\Order\Jobs\SendInvoiceEmailJob;
 use App\Modules\Order\Requests\OrderRequest;
 use App\Modules\Order\Resources\OrderCollection;
 use App\Modules\Order\Services\OrderService;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PlaceOrderController extends Controller
 {
@@ -21,6 +24,15 @@ class PlaceOrderController extends Controller
         try {
             //code...
             $order = $this->orderService->place_order($request->safe()->except(['order', 'coupon_code']));
+
+            if($order->mode_of_payment == PaymentMode::COD){
+                $data = [
+                    'order' => $order,
+                ];
+                $pdf = Pdf::loadView('pdf.invoice', $data)->setPaper('a4', 'landscape')->setOptions(['defaultFont' => 'sans-serif']);
+                $pdf->save(storage_path('app/public/invoices/').$order->receipt.'.pdf');
+                dispatch(new SendInvoiceEmailJob(auth()->user()->email, $order));
+            }
 
             return response()->json([
                 'message' => "Order placed successfully.",

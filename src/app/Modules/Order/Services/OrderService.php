@@ -97,6 +97,29 @@ class OrderService
         return $order;
     }
 
+    public function getInvoiceByReceipt(string $receipt): Order|null
+    {
+        $order = Order::with([
+            'products' => function($q) {
+                $q->with(['categories']);
+            },
+            'coupon'
+        ])
+        ->withCount(['products'])
+        ->where('receipt', $receipt)
+        ->where(function($q){
+            $q->where('mode_of_payment', PaymentMode::COD->value)
+            ->orWhere(function($query){
+                $query->where('mode_of_payment', PaymentMode::ONLINE->value)
+                ->where(function($q){
+                    $q->where('payment_status', PaymentStatus::PAID->value)->orWhere('payment_status', PaymentStatus::REFUND->value);
+                });
+            });
+        })
+        ->firstOrFail();
+        return $order;
+    }
+
     public function getById(string $id): Order|null
     {
         $order = Order::with([
@@ -224,6 +247,7 @@ class OrderService
             $order->coupon_maximum_use = $cart->coupon->maximum_number_of_use;
         }
         $order->save();
+
         return $order;
     }
 

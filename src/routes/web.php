@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Authentication\Controllers\ResetPasswordController;
+use App\Modules\Order\Controllers\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return "yes we are live";
 });
 
 Route::get('/success', function () {
@@ -26,3 +27,5 @@ Route::prefix('auth')->group(function () {
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'get'])->name('reset_password')->middleware('signed');
     Route::post('/reset-password/{token}', [ResetPasswordController::class, 'post'])->name('reset_password.post')->middleware('signed');
 });
+
+Route::get('/api/v1/invoice/{reciept}', [InvoiceController::class, 'get'])->name('invoice');

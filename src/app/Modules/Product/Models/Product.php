@@ -2,6 +2,7 @@
 
 namespace App\Modules\Product\Models;
 
+use App\Http\Services\PriceService;
 use App\Modules\Cart\Models\Cart;
 use App\Modules\Category\Models\Category;
 use App\Modules\Order\Models\Order;
@@ -73,6 +74,19 @@ class Product extends Model
             set: fn (string $value) => str()->slug($value),
         );
     }
+
+    public function getDiscountedPrice()
+    {
+        $data = new PriceService($this->price, $this->discount);
+        return $data->getDiscountedPrice();
+    }
+
+    public function getPriceWithQuantity(int $quantity)
+    {
+        $data = new PriceService($this->price, $this->discount);
+        return $data->getPriceWithQuantity($quantity);
+    }
+
 
     public function user()
     {
