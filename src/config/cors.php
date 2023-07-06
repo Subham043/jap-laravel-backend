@@ -27,21 +27,23 @@ return [
     ],
 
     'allowed_origins' => [
-        'http://127.0.0.1:3000',
-        env('MAIN_FRONTEND_ENDPOINT',
-        'http://localhost:3000'),
-        env('ADMIN_FRONTEND_ENDPOINT',
-        'http://localhost:62002')
+        // 'http://127.0.0.1:3000',
+        // env('MAIN_FRONTEND_ENDPOINT',
+        // 'http://localhost:3000'),
+        // env('ADMIN_FRONTEND_ENDPOINT',
+        // 'http://localhost:62002')
+        '*'
     ],
 
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => [
-        'Accept',
-        'Authorization',
-        'Content-Type',
-        'X-Requested-With',
-        'Range'
+        // 'Accept',
+        // 'Authorization',
+        // 'Content-Type',
+        // 'X-Requested-With',
+        // 'Range'
+        '*'
     ],
 
     'exposed_headers' => [],
