@@ -24,7 +24,7 @@ class CustomCors
         //     env('ADMIN_FRONTEND_ENDPOINT',
         //     'http://localhost:62002')
         // ];
-        // $origin = $request->server('HTTP_ORIGIN');
+        $origin = $request->server('HTTP_ORIGIN');
 
         // if (in_array($origin, $allowedOrigins)) {
         //     $headers = [
@@ -40,9 +40,9 @@ class CustomCors
         // }
         // return $response;
         $headers = [
-            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Origin' => $origin,
             'Access-Control-Allow-Methods' => 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS',
-            'Access-Control-Allow-Headers' => '*',
+            'Access-Control-Allow-Headers' => 'X-Requested-With, Content-Type, X-Token-Auth, Authorization, Accept, Application',
         ];
 
         foreach($headers as $key => $value) {

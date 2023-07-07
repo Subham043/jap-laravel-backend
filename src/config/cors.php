@@ -38,12 +38,11 @@ return [
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => [
-        // 'Accept',
-        // 'Authorization',
-        // 'Content-Type',
-        // 'X-Requested-With',
-        // 'Range'
-        '*'
+        'Accept',
+        'Authorization',
+        'Content-Type',
+        'X-Requested-With',
+        'Range'
     ],
 
     'exposed_headers' => [],
