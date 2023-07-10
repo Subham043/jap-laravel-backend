@@ -67,7 +67,9 @@ class ProductService
                     'is_best_sale',
                     AllowedFilter::callback('has_categories', function (Builder $query, $value) {
                         $query->whereHas('categories', function($q) use($value) {
-                            $q->where('is_active', true)->where('name', 'LIKE', '%' . $value . '%');
+                            $q->where('is_active', true)->where(function($qr) use($value){
+                                $qr->where('id', $value)->orWhere('slug', $value);
+                            });
                         });
                     }),
                     AllowedFilter::callback('has_reviews', function (Builder $query, $value) {
