@@ -15,16 +15,16 @@ class PriceService
 
     public function getDiscountInPrice()
     {
-        return $this->discount/100;
+        return round($this->discount/100, 2);
     }
 
     public function getDiscountedPrice()
     {
-        return $this->discount==0 ? $this->price : $this->price - ($this->price * $this->getDiscountInPrice());
+        return $this->discount==0 ? round($this->price, 2) : round($this->price - ($this->price * $this->getDiscountInPrice()), 2);
     }
 
     public function getPriceWithQuantity(int $quantity = 1)
     {
-        return $this->getDiscountedPrice() * $quantity;
+        return round($this->getDiscountedPrice() * $quantity, 2);
     }
 }

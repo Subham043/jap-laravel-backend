@@ -24,7 +24,7 @@ class ProductReviewCreateController extends Controller
                 [
                     ...$request->safe()->except(['image']),
                     'product_id' => $product_id,
-                    'user_id' => auth()->user()->id,
+                    // 'user_id' => auth()->user()->id,
                 ]
             );
 
