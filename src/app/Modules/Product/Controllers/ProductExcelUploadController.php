@@ -36,6 +36,7 @@ class ProductExcelUploadController extends Controller
                 'message' => "Product uploaded successfully.",
             ], 200);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json([
                 'message' => "Something went wrong! Please try again.",
             ], 400);

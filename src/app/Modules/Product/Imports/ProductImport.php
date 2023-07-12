@@ -15,9 +15,10 @@ class ProductImport implements ToModel
      */
     public function model(array $row)
     {
-        return new Product([
+        return Product::updateOrCreate(
+            ['slug' => Str::slug($row[1])
+        ],[
             'name' => $row[0],
-            'slug' => Str::slug($row[1]),
             'description' => $row[2],
             'price' => $row[3],
             'discount' => $row[4],
@@ -30,5 +31,20 @@ class ProductImport implements ToModel
             'is_featured' => $row[11],
             'is_best_sale' => $row[12],
         ]);
+        // return new Product([
+        //     'name' => $row[0],
+        //     'slug' => Str::slug($row[1]),
+        //     'description' => $row[2],
+        //     'price' => $row[3],
+        //     'discount' => $row[4],
+        //     'inventory' => $row[5],
+        //     'meta_title' => $row[6],
+        //     'meta_keywords' => $row[7],
+        //     'meta_description' => $row[8],
+        //     'is_active' => $row[9],
+        //     'is_new_arrival' => $row[10],
+        //     'is_featured' => $row[11],
+        //     'is_best_sale' => $row[12],
+        // ]);
     }
 }

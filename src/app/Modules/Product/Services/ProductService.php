@@ -68,7 +68,7 @@ class ProductService
                     AllowedFilter::callback('has_categories', function (Builder $query, $value) {
                         $query->whereHas('categories', function($q) use($value) {
                             $q->where('is_active', true)->where(function($qr) use($value){
-                                $qr->where('id', $value)->orWhere('slug', $value);
+                                $qr->where('slug', $value);
                             });
                         });
                     }),
