@@ -17,7 +17,7 @@ class ProductReviewCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check() && Product::findOrFail($this->route('product_id'));
+        return Product::findOrFail($this->route('product_id'));
     }
 
     /**
