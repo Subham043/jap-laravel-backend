@@ -112,10 +112,21 @@ Route::prefix('enquiry')->group(function () {
     Route::post('/create', [EnquiryCreateController::class, 'post'])->name('enquiry.create');
 });
 
+Route::prefix('product')->group(function () {
+    Route::prefix('{product_id}')->group(function () {
+        Route::prefix('reviews')->group(function () {
+            Route::post('/create', [ProductReviewCreateController::class, 'post'])->name('product.review.create');
+        });
+    });
+});
+
 Route::prefix('product/main')->group(function () {
     Route::get('/paginate', [MainProductPaginateController::class, 'get'])->name('product.paginate.main');
     Route::get('/detail/{slug}', [MainProductDetailController::class, 'get'])->name('product.detail.main');
     Route::post('/pincode/{slug}', [MainProductPincodeController::class, 'post'])->name('product.pincode.main');
+    Route::prefix('/reviews/{product_id}')->group(function () {
+        Route::post('/create', [ProductReviewCreateController::class, 'post'])->name('product.review.create');
+    });
 });
 
 Route::prefix('category/main')->group(function () {
