@@ -24,7 +24,18 @@ class EnquiryUpdateRequest extends EnquiryCreateRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|numeric|digits:10',
-            'message' => 'required|string',
+            'company_name' => 'required|string|max:255',
+            'company_website' => 'required|string|max:255',
+            'designation' => 'required|string|max:255',
+            'product' => 'required|string|max:255',
+            'quantity' => 'required|string|max:255',
+            'gst' => 'required|string|max:255',
+            'certification' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'alternate_name' => 'nullable|string|max:255',
+            'alternate_phone' => 'nullable|numeric|digits:10',
+            'alternate_email' => 'nullable|email|max:255',
+            'message' => 'nullable|string',
         ];
     }
 }

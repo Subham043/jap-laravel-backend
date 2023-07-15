@@ -18,19 +18,41 @@ class EnquiryExport implements FromCollection,WithHeadings,WithMapping
             'Name',
             'Email',
             'Phone',
+            'Company name',
+            'Company website',
+            'Designation',
+            'Product',
+            'Quantity',
+            'Gst',
+            'Certification',
+            'Address',
+            'Alternate name',
+            'Alternate phone',
+            'Alternate email',
             'Message',
-            'Created_at',
+            'Created at',
         ];
     }
     public function map($enquiry): array
     {
          return[
-             $enquiry->id,
-             $enquiry->name,
-             $enquiry->email,
-             $enquiry->phone,
-             $enquiry->message,
-             $enquiry->created_at,
+                $enquiry->id,
+                $enquiry->name,
+                $enquiry->email,
+                $enquiry->phone,
+                $enquiry->company_name,
+                $enquiry->company_website,
+                $enquiry->designation,
+                $enquiry->product,
+                $enquiry->quantity,
+                $enquiry->gst,
+                $enquiry->certification,
+                $enquiry->address,
+                $enquiry->alternate_name,
+                $enquiry->alternate_phone,
+                $enquiry->alternate_email,
+                $enquiry->message,
+                $enquiry->created_at,
          ];
     }
     public function collection()

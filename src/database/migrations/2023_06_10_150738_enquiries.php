@@ -16,6 +16,17 @@ return new class extends Migration
             $table->string('name', 500);
             $table->string('email', 500);
             $table->string('phone', 500);
+            $table->string('company_name', 500)->nullable();
+            $table->string('company_website', 500)->nullable();
+            $table->string('designation', 500)->nullable();
+            $table->string('product', 500)->nullable();
+            $table->string('quantity', 500)->nullable();
+            $table->string('gst', 500)->nullable();
+            $table->string('certification', 500)->nullable();
+            $table->string('address', 500)->nullable();
+            $table->string('alternate_name', 500)->nullable();
+            $table->string('alternate_phone', 500)->nullable();
+            $table->string('alternate_email', 500)->nullable();
             $table->string('message')->nullable();
             $table->timestamps();
         });

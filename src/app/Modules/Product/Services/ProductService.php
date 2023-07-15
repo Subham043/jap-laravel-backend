@@ -21,7 +21,7 @@ class ProductService
 
     public function paginate(Int $total = 10): LengthAwarePaginator
     {
-        $query = Product::with(['categories', 'other_images', 'reviews'])->latest();
+        $query = Product::with(['categories', 'other_images', 'reviews']);
         return QueryBuilder::for($query)
                 ->allowedIncludes(['categories', 'reviews'])
                 ->defaultSort('id')
@@ -56,7 +56,7 @@ class ProductService
                 'reviews' => function($q){
                     $q->where('is_approved', true);
                 }
-            ])->where('is_active', true)->latest();
+            ])->where('is_active', true);
         return QueryBuilder::for($query)
                 ->allowedIncludes(['categories', 'reviews'])
                 ->defaultSort('id')
