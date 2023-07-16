@@ -7,10 +7,10 @@ class PriceService
     private float $price;
     private float $discount;
 
-    public function __construct(float $price, float $discount)
+    public function __construct(float $price, float|null $discount)
     {
         $this->price = $price;
-        $this->discount = $discount;
+        $this->discount = $discount ? $discount : 0;
     }
 
     public function getDiscountInPrice()
