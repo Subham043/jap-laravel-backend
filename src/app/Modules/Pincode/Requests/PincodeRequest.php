@@ -28,9 +28,8 @@ class PincodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'state' => 'required|string|max:500',
-            'min_pincode' => 'required|numeric|gt:0',
-            'max_pincode' => 'required|numeric|gt:0',
+            'place' => 'required|string|max:500',
+            'pincode' => 'required|numeric|gt:0',
         ];
     }
 

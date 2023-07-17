@@ -16,9 +16,8 @@ class PincodeCollection extends JsonResource
     {
         return [
             'id' => $this->id,
-            'state' => $this->state,
-            'min_pincode' => $this->min_pincode,
-            'max_pincode' => $this->max_pincode,
+            'place' => $this->place,
+            'pincode' => $this->pincode,
             'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
             'updated_at' => $this->updated_at ? $this->updated_at->diffForHumans() : null,
         ];

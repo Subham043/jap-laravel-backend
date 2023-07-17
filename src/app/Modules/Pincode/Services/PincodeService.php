@@ -62,8 +62,7 @@ class CommonFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->where('state', 'LIKE', '%' . $value . '%')
-        ->orWhere('min_pincode', 'LIKE', '%' . $value . '%')
-        ->orWhere('max_pincode', 'LIKE', '%' . $value . '%');
+        $query->where('place', 'LIKE', '%' . $value . '%')
+        ->orWhere('pincode', 'LIKE', '%' . $value . '%');
     }
 }

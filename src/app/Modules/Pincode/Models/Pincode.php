@@ -10,17 +10,15 @@ class Pincode extends Model
     protected $table = 'pincodes';
 
     protected $fillable = [
-        'state',
-        'min_pincode',
-        'max_pincode',
+        'place',
+        'pincode',
         'user_id',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'min_pincode' => 'int',
-        'max_pincode' => 'int',
+        'pincode' => 'int',
     ];
 
     public function user()

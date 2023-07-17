@@ -4,7 +4,6 @@ namespace App\Modules\Product\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Product\Requests\ProductPincodeRequest;
-use App\Modules\Product\Resources\ProductCollection;
 use App\Modules\Product\Services\ProductService;
 
 class MainProductPincodeController extends Controller
@@ -30,7 +29,14 @@ class MainProductPincodeController extends Controller
 
         foreach ($pincodes as $key => $value) {
             # code...
-            if($request->pincode >= $value->min_pincode && $request->pincode <= $value->max_pincode){
+            // if($request->pincode >= $value->min_pincode && $request->pincode <= $value->max_pincode){
+            //     $availability = true;
+            //     return response()->json([
+            //         'message' => "Product available for the given pincode.",
+            //         'availability' => $availability,
+            //     ], 200);
+            // }
+            if($request->pincode == $value->pincode){
                 $availability = true;
                 return response()->json([
                     'message' => "Product available for the given pincode.",

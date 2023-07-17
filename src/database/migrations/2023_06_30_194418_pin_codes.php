@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('pincodes', function (Blueprint $table) {
             $table->id();
-            $table->string('state', 500);
-            $table->string('min_pincode', 500);
-            $table->string('max_pincode', 500);
+            $table->string('place', 500);
+            $table->string('pincode', 500);
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
