@@ -37,13 +37,19 @@ class CartRequest extends FormRequest
                 'exists:products,id',
                 'min:1',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    $product = Product::findOrFail($value);
-                    $index = explode('.', $attribute)[1];
-                    if ( empty($product->inventory) || $product->inventory == 0) {
-                        $fail("The {$attribute} is out of stock.");
-                    }
-                    if ($product->inventory < $this->input("data.{$index}.quantity")) {
-                        $fail("Requested quantity is more than the number of item in stock.");
+                    try {
+                        //code...
+                        $product = Product::findOrFail($value);
+                        $index = explode('.', $attribute)[1];
+                        if ( empty($product->inventory) || $product->inventory == 0) {
+                            $fail("The {$attribute} is out of stock.");
+                        }
+                        if ($product->inventory < $this->input("data.{$index}.quantity")) {
+                            $fail("Requested quantity is more than the number of item in stock.");
+                        }
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                        $fail("The {$attribute} is invalid.");
                     }
                 },
             ],
