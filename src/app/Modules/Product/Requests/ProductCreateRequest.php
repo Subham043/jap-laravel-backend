@@ -56,8 +56,8 @@ class ProductCreateRequest extends FormRequest
             'is_best_sale' => 'required|boolean',
             'category' => 'nullable|array|min:1',
             'category.*' => 'nullable|numeric|exists:categories,id',
-            'pincode' => 'nullable|array|min:1',
-            'pincode.*' => 'nullable|numeric|exists:pincodes,id',
+            // 'pincode' => 'nullable|array|min:1',
+            // 'pincode.*' => 'nullable|numeric|exists:pincodes,id',
         ];
     }
 

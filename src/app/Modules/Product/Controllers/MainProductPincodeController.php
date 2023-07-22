@@ -3,6 +3,7 @@
 namespace App\Modules\Product\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Pincode\Models\Pincode;
 use App\Modules\Product\Requests\ProductPincodeRequest;
 use App\Modules\Product\Services\ProductService;
 
@@ -17,17 +18,24 @@ class MainProductPincodeController extends Controller
 
     public function post(ProductPincodeRequest $request, $slug){
         $product = $this->productService->getBySlug($slug);
-        $pincodes = $product->pincodes;
+        // $pincodes = $product->pincodes;
         $availability = false;
-        if($pincodes->count()==0){
-            $availability = true;
+        $pincode = Pincode::where('pincode', $request->pincode)->first();
+        if($pincode){
             return response()->json([
                 'message' => "Product available for the given pincode.",
-                'availability' => $availability,
+                'availability' => true,
             ], 200);
         }
+        // if($pincodes->count()==0){
+        //     $availability = true;
+        //     return response()->json([
+        //         'message' => "Product available for the given pincode.",
+        //         'availability' => $availability,
+        //     ], 200);
+        // }
 
-        foreach ($pincodes as $key => $value) {
+        // foreach ($pincodes as $key => $value) {
             # code...
             // if($request->pincode >= $value->min_pincode && $request->pincode <= $value->max_pincode){
             //     $availability = true;
@@ -36,17 +44,17 @@ class MainProductPincodeController extends Controller
             //         'availability' => $availability,
             //     ], 200);
             // }
-            if($request->pincode == $value->pincode){
-                $availability = true;
-                return response()->json([
-                    'message' => "Product available for the given pincode.",
-                    'availability' => $availability,
-                ], 200);
-            }
-        }
+            // if($request->pincode == $value->pincode){
+            //     $availability = true;
+            //     return response()->json([
+            //         'message' => "Product available for the given pincode.",
+            //         'availability' => $availability,
+            //     ], 200);
+            // }
+        // }
         return response()->json([
             'message' => "Product not available for the given pincode.",
-            'availability' => $availability,
+            'availability' => false,
         ], 400);
 
     }

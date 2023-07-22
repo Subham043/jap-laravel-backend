@@ -6,6 +6,7 @@ use App\Modules\Cart\Models\Cart;
 use App\Modules\Coupon\Models\Coupon;
 use App\Modules\DeliveryCharge\Services\DeliveryChargeService;
 use App\Modules\Tax\Services\TaxService;
+use Illuminate\Support\Facades\DB;
 
 class CartService
 {
@@ -49,6 +50,7 @@ class CartService
 
     public function save_products(Cart $cart, array $data): Cart
     {
+        DB::table('cart_products')->where('cart_id', $cart->id)->whereNull('product_id')->delete();
         $cart->products()->sync($data);
         $this->calculate_cart_price();
         return $cart;

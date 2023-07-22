@@ -7,6 +7,7 @@ use App\Enums\PaymentStatus;
 use App\Modules\Cart\Services\CartService;
 use App\Modules\Coupon\Models\Coupon;
 use App\Modules\Order\Models\Order;
+use App\Modules\Pincode\Models\Pincode;
 use App\Modules\Product\Models\Product;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
@@ -43,7 +44,16 @@ class OrderRequest extends FormRequest
             'billing_country' => ['required', 'string', 'max:255'],
             'billing_state' => ['required', 'string', 'max:255'],
             'billing_city' => ['required', 'string', 'max:255'],
-            'billing_pin' => ['required','numeric'],
+            'billing_pin' => [
+                'required',
+                'numeric',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    $pincode = Pincode::where('pincode', $value)->first();
+                    if (empty($pincode)) {
+                        $fail("Products are not deliverable for the given pincode - {$value}.");
+                    }
+                },
+            ],
             'billing_address_1' => ['required', 'string', 'max:255'],
             'billing_address_2' => ['nullable', 'string', 'max:255'],
             'shipping_first_name' => ['nullable', 'string', 'max:255'],
@@ -68,19 +78,19 @@ class OrderRequest extends FormRequest
                 function (string $attribute, mixed $value, Closure $fail) {
                     $product = Product::findOrFail($value);
                     $index = explode('.', $attribute)[1];
-                    if($product->pincodes->count()>0){
-                        $availability = false;
-                        foreach ($product->pincodes as $key => $value) {
-                            # code...
-                            if($this->billing_pin >= $value->min_pincode && $this->billing_pin <= $value->max_pincode){
-                                $availability = true;
-                                break;
-                            }
-                        }
-                        if(!$availability){
-                            $fail("The {$attribute} is not deliverable for the given pincode.");
-                        }
-                    }
+                    // if($product->pincodes->count()>0){
+                    //     $availability = false;
+                    //     foreach ($product->pincodes as $key => $value) {
+                    //         # code...
+                    //         if($this->billing_pin >= $value->min_pincode && $this->billing_pin <= $value->max_pincode){
+                    //             $availability = true;
+                    //             break;
+                    //         }
+                    //     }
+                    //     if(!$availability){
+                    //         $fail("The {$attribute} is not deliverable for the given pincode.");
+                    //     }
+                    // }
 
                     if ( empty($product->inventory) || $product->inventory == 0) {
                         $fail("The {$attribute} is out of stock.");
