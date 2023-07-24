@@ -32,9 +32,9 @@ class ProductCreateController extends Controller
                 $product->categories()->sync($request->category);
             }
 
-            if($request->pincode && count($request->pincode)>0){
-                $product->pincodes()->sync($request->pincode);
-            }
+            // if($request->pincode && count($request->pincode)>0){
+            //     $product->pincodes()->sync($request->pincode);
+            // }
 
             if($request->hasFile('featured_image')){
                 $this->productService->saveFile($product, 'featured_image');
