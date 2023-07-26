@@ -13,6 +13,7 @@ class CartService
 
     public function get(): Cart|null
     {
+        Cart::whereNull('user_id')->delete();
         $data = Cart::with([
             'products' => function($q) {
                 $q->with(['categories']);
