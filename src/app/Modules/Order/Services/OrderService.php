@@ -215,7 +215,7 @@ class OrderService
         $order->total_price = $cart->total_price;
         $order->receipt = Uuid::generate(4)->string;
         if($order->mode_of_payment == PaymentMode::ONLINE){
-            $price = $cart->coupon_discount > 0 ? $cart->total_price - $cart->coupon_discount : $cart->total_price;
+            $price = $cart->coupon_discount > 0 ? ($cart->total_price + $cart->gst_charge + $cart->delivery_charge) - $cart->coupon_discount : ($cart->total_price + $cart->gst_charge + $cart->delivery_charge);
             $order->razorpay_order_id = (new RazorpayService)->create_order_id($price, $order->receipt);
         }else{
             $order->razorpay_order_id = null;
