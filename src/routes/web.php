@@ -5,6 +5,7 @@ use App\Modules\Category\Controllers\CategoryExcelController;
 use App\Modules\Enquiry\Controllers\EnquiryExcelController;
 use App\Modules\Order\Controllers\InvoiceController;
 use App\Modules\Order\Controllers\OrderExcelController;
+use App\Modules\Order\Controllers\OrderPaymentController;
 use App\Modules\Product\Controllers\ProductExcelController;
 use App\Modules\User\Controllers\UserExcelController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,9 @@ Route::prefix('auth')->group(function () {
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'get'])->name('reset_password')->middleware('signed');
     Route::post('/reset-password/{token}', [ResetPasswordController::class, 'post'])->name('reset_password.post')->middleware('signed');
 });
+
+Route::get('/make-order-payment/{receipt}', [OrderPaymentController::class, 'get'])->name('make_payment');
+Route::post('/verify-order-payment/{receipt}', [OrderPaymentController::class, 'post'])->name('verify_payment');
 
 Route::prefix('/api/v1')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/invoice/{reciept}', [InvoiceController::class, 'get'])->name('invoice.pdf');

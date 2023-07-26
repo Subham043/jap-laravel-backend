@@ -40,7 +40,7 @@ class Handler extends ExceptionHandler
                     'message' => 'Data not found.'
                 ], $e->getStatusCode());
             }
-            return redirect()->back()->with('error_status', 'Data not found.');
+            // return redirect()->back()->with('error_status', 'Data not found.');
         });
         $this->renderable(function (ThrottleRequestsException $e, Request $request) {
             if ($request->wantsJson()) {
@@ -72,7 +72,7 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage()
                 ], $e->getStatusCode());
             }
-            return redirect()->back()->with('error_status', $e->getMessage());
+            // return redirect()->back()->with('error_status', $e->getMessage());
         });
         $this->renderable(function (ModelNotFoundException $e, Request $request) {
             if ($request->wantsJson()) {
@@ -80,7 +80,7 @@ class Handler extends ExceptionHandler
                     'message' => "Data not found."
                 ], 404);
             }
-            return redirect()->back()->with('error_status', "Data not found.");
+            // return redirect()->back()->with('error_status', "Data not found.");
         });
         $this->renderable(function (DecryptException $e, Request $request) {
             if ($request->wantsJson()) {

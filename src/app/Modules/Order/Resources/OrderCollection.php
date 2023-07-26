@@ -62,6 +62,7 @@ class OrderCollection extends JsonResource
             'order_status' => $this->order_status,
             'payment_status' => $this->payment_status,
             'razorpay_order_id' => $this->razorpay_order_id,
+            'payment_url' => $this->razorpay_order_id ? route('make_payment', $this->receipt) : null,
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
         ];
