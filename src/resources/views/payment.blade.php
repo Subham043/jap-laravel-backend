@@ -82,7 +82,7 @@
         function setPrice() {
             options = {
                 "key": "{{env('RAZORPAY_KEY')}}", // Enter the Key ID generated from the Dashboard
-                "amount": parseInt({{$total_price}}) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "amount": parseFloat({{$total_price}}) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                 "order_id": "{{$order->razorpay_order_id}}",
                 "currency": "INR",
                 "name": "JAP",
