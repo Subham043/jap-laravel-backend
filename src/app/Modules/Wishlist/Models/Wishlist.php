@@ -2,6 +2,7 @@
 
 namespace App\Modules\Wishlist\Models;
 
+use App\Modules\Authentication\Models\User;
 use App\Modules\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 

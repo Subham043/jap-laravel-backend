@@ -2,6 +2,7 @@
 
 namespace App\Modules\Cart\Models;
 
+use App\Modules\Authentication\Models\User;
 use App\Modules\Coupon\Models\Coupon;
 use App\Modules\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;

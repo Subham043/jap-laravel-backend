@@ -2,6 +2,7 @@
 
 namespace App\Modules\DeliveryCharge\Models;
 
+use App\Modules\Authentication\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class DeliveryCharge extends Model

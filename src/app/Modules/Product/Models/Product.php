@@ -3,6 +3,7 @@
 namespace App\Modules\Product\Models;
 
 use App\Http\Services\PriceService;
+use App\Modules\Authentication\Models\User;
 use App\Modules\Cart\Models\Cart;
 use App\Modules\Category\Models\Category;
 use App\Modules\Order\Models\Order;

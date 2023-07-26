@@ -5,6 +5,7 @@ namespace App\Modules\Order\Models;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMode;
 use App\Enums\PaymentStatus;
+use App\Modules\Authentication\Models\User;
 use App\Modules\Coupon\Models\Coupon;
 use App\Modules\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;

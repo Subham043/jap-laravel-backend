@@ -2,6 +2,7 @@
 
 namespace App\Modules\ProductReview\Models;
 
+use App\Modules\Authentication\Models\User;
 use App\Modules\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;

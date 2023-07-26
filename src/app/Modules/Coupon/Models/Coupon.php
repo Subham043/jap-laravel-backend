@@ -2,6 +2,9 @@
 
 namespace App\Modules\Coupon\Models;
 
+use App\Modules\Authentication\Models\User;
+use App\Modules\Cart\Models\Cart;
+use App\Modules\Order\Models\Order;
 use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model
