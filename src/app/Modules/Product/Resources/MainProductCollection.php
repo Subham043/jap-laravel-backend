@@ -27,6 +27,7 @@ class MainProductCollection extends JsonResource
             'price' => $this->price,
             'discount' => $this->discount,
             'discounted_price' => $priceService->getDiscountedPrice(),
+            'weight' => $this->weight,
             'inventory' => $this->inventory,
             'in_stock' => $this->inventory > 0 ? true : false,
             'meta_title' => $this->meta_title,

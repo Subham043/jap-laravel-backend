@@ -27,6 +27,7 @@ class ProductUpdateRequest extends ProductCreateRequest
             'price' => 'required|numeric|gt:0',
             'discount' => 'required|numeric|gte:0',
             'inventory' => 'required|numeric|gte:0',
+            'weight' => 'required|string|max:500',
             'featured_image' => 'nullable|image|max:500',
             'image_title' => 'nullable|string|max:500',
             'image_alt' => 'nullable|string|max:500',

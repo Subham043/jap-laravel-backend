@@ -25,6 +25,7 @@ class Product extends Model
         'price',
         'discount',
         'inventory',
+        'weight',
         'featured_image',
         'image_title',
         'image_alt',

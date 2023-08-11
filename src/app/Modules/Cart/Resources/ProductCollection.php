@@ -27,6 +27,7 @@ class ProductCollection extends JsonResource
             'discount' => $this->discount,
             'discounted_price' => $priceService->getDiscountedPrice(),
             'inventory' => $this->inventory,
+            'weight' => $this->weight,
             'in_stock' => $this->inventory > 0 ? true : false,
             'featured_image_link' => asset($this->featured_image),
             'image_title' => $this->image_title,
