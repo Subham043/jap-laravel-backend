@@ -62,6 +62,12 @@ use App\Modules\Coupon\Controllers\CouponPaginateController;
 use App\Modules\Coupon\Controllers\CouponUpdateController;
 use App\Modules\DeliveryCharge\Controllers\DeliveryChargeDetailController;
 use App\Modules\DeliveryCharge\Controllers\DeliveryChargeSaveController;
+use App\Modules\HomePage\Banner\Controllers\BannerCreateController;
+use App\Modules\HomePage\Banner\Controllers\BannerDeleteController;
+use App\Modules\HomePage\Banner\Controllers\BannerDetailController;
+use App\Modules\HomePage\Banner\Controllers\BannerPaginateController;
+use App\Modules\HomePage\Banner\Controllers\BannerUpdateController;
+use App\Modules\HomePage\Banner\Controllers\UserBannerAllController;
 use App\Modules\Order\Controllers\OrderDetailController;
 use App\Modules\Order\Controllers\OrderPaginateController;
 use App\Modules\Order\Controllers\OrderPlacedCancelController;
@@ -110,6 +116,10 @@ Route::prefix('/email/verify')->group(function () {
 
 Route::prefix('enquiry')->group(function () {
     Route::post('/create', [EnquiryCreateController::class, 'post'])->name('enquiry.create');
+});
+
+Route::prefix('banner/main')->group(function () {
+    Route::get('/all', [UserBannerAllController::class, 'get'])->name('banner.all.main');
 });
 
 Route::prefix('product/main')->group(function () {
@@ -190,6 +200,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/update/{id}', [EnquiryUpdateController::class, 'post'])->name('enquiry.update');
         Route::delete('/delete/{id}', [EnquiryDeleteController::class, 'delete'])->name('enquiry.delete');
         Route::get('/detail/{id}', [EnquiryDetailController::class, 'get'])->name('enquiry.get');
+    });
+
+    Route::prefix('banner')->group(function () {
+        Route::get('/paginate', [BannerPaginateController::class, 'get'])->name('banner.paginate');
+        Route::post('/create', [BannerCreateController::class, 'post'])->name('banner.create');
+        Route::post('/update/{id}', [BannerUpdateController::class, 'post'])->name('banner.update');
+        Route::delete('/delete/{id}', [BannerDeleteController::class, 'get'])->name('banner.delete');
+        Route::get('/detail/{id}', [BannerDetailController::class, 'get'])->name('banner.get');
     });
 
     Route::prefix('category')->group(function () {

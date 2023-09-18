@@ -35,6 +35,11 @@ class MainPermissionSeeder extends Seeder
         Permission::create(['name' => 'list products']);
         Permission::create(['name' => 'delete products']);
 
+        Permission::create(['name' => 'create home page content']);
+        Permission::create(['name' => 'edit home page content']);
+        Permission::create(['name' => 'list home page content']);
+        Permission::create(['name' => 'delete home page content']);
+
         Permission::create(['name' => 'list delivery charges']);
         Permission::create(['name' => 'save delivery charges']);
 
