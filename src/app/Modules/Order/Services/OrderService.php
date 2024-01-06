@@ -134,6 +134,14 @@ class OrderService
         return $order;
     }
 
+    public function getLatest(): Order|null
+    {
+        $order = Order::where('user_id', auth()->user()->id)
+        ->latest()
+        ->first();
+        return $order;
+    }
+
     public function update_status(array $data, Order $order): Order
     {
         $order->update($data);

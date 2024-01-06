@@ -74,6 +74,7 @@ use App\Modules\HomePage\Banner\Controllers\BannerPaginateController;
 use App\Modules\HomePage\Banner\Controllers\BannerUpdateController;
 use App\Modules\HomePage\Banner\Controllers\UserBannerAllController;
 use App\Modules\Order\Controllers\OrderDetailController;
+use App\Modules\Order\Controllers\OrderLatestBillingInfoController;
 use App\Modules\Order\Controllers\OrderPaginateController;
 use App\Modules\Order\Controllers\OrderPlacedCancelController;
 use App\Modules\Order\Controllers\OrderPlacedDetailController;
@@ -193,6 +194,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('order')->group(function () {
+        Route::get('/latest-billing-info', [OrderLatestBillingInfoController::class, 'get'])->name('order.billing.info');
         Route::post('/place', [PlaceOrderController::class, 'post'])->name('order.place');
         Route::get('/placed/paginate', [OrderPlacedPaginateController::class, 'get'])->name('order.placed.paginate');
         Route::get('/placed/detail/{receipt}', [OrderPlacedDetailController::class, 'get'])->name('order.placed.detail');

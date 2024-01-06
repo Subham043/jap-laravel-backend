@@ -4,13 +4,11 @@ namespace App\Modules\Order\Jobs;
 
 use App\Modules\Order\Mail\SendInvoiceEmail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class SendInvoiceEmailJob implements ShouldQueue
 {

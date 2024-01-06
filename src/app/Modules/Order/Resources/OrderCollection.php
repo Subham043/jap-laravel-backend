@@ -26,7 +26,7 @@ class OrderCollection extends JsonResource
             'total_price_without_gst_delivery_charge' => $this->total_price,
             'gst_charge' => $this->gst_charge,
             'delivery_charge' => $this->delivery_charge,
-            'total_price_with_gst_delivery_charge' => ($this->total_price + $this->gst_charge + $this->delivery_charge),
+            'total_price_with_gst_delivery_charge' => round(($this->total_price + $this->gst_charge + $this->delivery_charge), 2),
             'coupon_discount' => $this->coupon_discount,
             'total_price_with_coupon_dicount' => round($total_price_with_coupon, 2),
             'coupon' => CouponCollection::make($this->coupon),

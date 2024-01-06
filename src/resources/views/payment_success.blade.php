@@ -32,9 +32,7 @@
                                 </a>
                             </div>
                             <h3>JAP</h3>
-                            @if (session('success_status'))
-                                <p>{{ Session::get('success_status') }}</p>
-                            @endif
+                            <p>Your payment transaction was completed successfully.</p>
                             <a class="btn btn-dark" href="{{config('app.frontend_url')}}">Go Back</a>
                         </div>
                     </div>

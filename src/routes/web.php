@@ -30,6 +30,10 @@ Route::get('/success', function () {
     return view('success');
 })->name('success');
 
+Route::get('/payment-success', function () {
+    return view('payment_success');
+})->name('payment.success');
+
 Route::prefix('auth')->group(function () {
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'get'])->name('reset_password')->middleware('signed');
     Route::post('/reset-password/{token}', [ResetPasswordController::class, 'post'])->name('reset_password.post')->middleware('signed');

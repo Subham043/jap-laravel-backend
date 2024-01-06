@@ -132,7 +132,7 @@
         const verifyPayment = async (data) => {
             try {
                 const response = await axios.post('{{route('verify_payment', $order->receipt)}}', data)
-                window.location.replace('{{route('success')}}');
+                window.location.replace('{{route('payment.success')}}');
             }catch (error){
                 console.log(error);
                 if(error?.response?.data?.errors?.razorpay_order_id){
