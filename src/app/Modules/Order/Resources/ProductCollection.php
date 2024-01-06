@@ -16,19 +16,19 @@ class ProductCollection extends JsonResource
      */
     public function toArray($request)
     {
-        $priceService = new PriceService($this->pivot->price, $this->pivot->discount);
+        $priceService = new PriceService($this->pivot->product_price, $this->pivot->product_discount);
         return [
             'id' => $this->id,
-            'name' => $this->pivot->name,
-            'slug' => $this->pivot->slug,
-            'description' => $this->pivot->description,
-            'price' => $this->pivot->price,
-            'discount' => $this->pivot->discount,
+            'name' => $this->pivot->product_name,
+            'slug' => $this->pivot->product_slug,
+            'description' => $this->pivot->product_description,
+            'price' => $this->pivot->product_price,
+            'discount' => $this->pivot->product_discount,
             'discounted_price' => $priceService->getDiscountedPrice(),
-            'weight' => $this->pivot->weight,
+            'weight' => $this->pivot->product_weight,
             'inventory' => $this->inventory,
             'in_stock' => $this->inventory > 0 ? true : false,
-            'featured_image_link' => asset($this->pivot->image),
+            'featured_image_link' => asset($this->pivot->product_image),
             'image_title' => $this->image_title,
             'image_alt' => $this->image_alt,
             'is_active' => $this->is_active,
