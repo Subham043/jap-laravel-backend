@@ -61,7 +61,7 @@ class ProductImageService
 
     public function saveFile(ProductImage $product, string $file_key): ProductImage
     {
-        $this->deleteFile($product, $file_key);
+        // $this->deleteFile($product, $file_key);
         $file = (new FileService)->save_file($file_key, (new ProductImage)->image_path);
         return $this->update([
             $file_key => $file,
@@ -70,7 +70,7 @@ class ProductImageService
 
     public function delete(ProductImage $product): bool|null
     {
-        $this->deleteFile($product, 'image');
+        // $this->deleteFile($product, 'image');
         return $product->delete();
     }
 
@@ -88,7 +88,9 @@ class CommonFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->where('image_title', 'LIKE', '%' . $value . '%')
-        ->orWhere('image_alt', 'LIKE', '%' . $value . '%');
+        $query->where(function($q) use($value){
+            $q->where('image_title', 'LIKE', '%' . $value . '%')
+            ->orWhere('image_alt', 'LIKE', '%' . $value . '%');
+        });
     }
 }

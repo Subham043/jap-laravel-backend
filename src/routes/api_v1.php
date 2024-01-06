@@ -55,6 +55,11 @@ use App\Modules\Cart\Controllers\CartDetailController;
 use App\Modules\Cart\Controllers\CartSaveController;
 use App\Modules\Category\Controllers\MainCategoryDetailController;
 use App\Modules\Category\Controllers\MainCategoryPaginateController;
+use App\Modules\Contact\Controllers\ContactCreateController;
+use App\Modules\Contact\Controllers\ContactDeleteController;
+use App\Modules\Contact\Controllers\ContactDetailController;
+use App\Modules\Contact\Controllers\ContactPaginateController;
+use App\Modules\Contact\Controllers\ContactUpdateController;
 use App\Modules\Coupon\Controllers\CouponCreateController;
 use App\Modules\Coupon\Controllers\CouponDeleteController;
 use App\Modules\Coupon\Controllers\CouponDetailController;
@@ -116,6 +121,10 @@ Route::prefix('/email/verify')->group(function () {
 
 Route::prefix('enquiry')->group(function () {
     Route::post('/create', [EnquiryCreateController::class, 'post'])->name('enquiry.create');
+});
+
+Route::prefix('contact')->group(function () {
+    Route::post('/create', [ContactCreateController::class, 'post'])->name('contact.create');
 });
 
 Route::prefix('banner/main')->group(function () {
@@ -196,10 +205,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('enquiry')->group(function () {
         Route::get('/paginate', [EnquiryPaginateController::class, 'get'])->name('enquiry.paginate');
-        Route::post('/create', [EnquiryCreateController::class, 'post'])->name('enquiry.create');
         Route::post('/update/{id}', [EnquiryUpdateController::class, 'post'])->name('enquiry.update');
         Route::delete('/delete/{id}', [EnquiryDeleteController::class, 'delete'])->name('enquiry.delete');
         Route::get('/detail/{id}', [EnquiryDetailController::class, 'get'])->name('enquiry.get');
+    });
+
+    Route::prefix('contact')->group(function () {
+        Route::get('/paginate', [ContactPaginateController::class, 'get'])->name('contact.paginate');
+        Route::post('/update/{id}', [ContactUpdateController::class, 'post'])->name('contact.update');
+        Route::delete('/delete/{id}', [ContactDeleteController::class, 'delete'])->name('contact.delete');
+        Route::get('/detail/{id}', [ContactDetailController::class, 'get'])->name('contact.get');
     });
 
     Route::prefix('banner')->group(function () {

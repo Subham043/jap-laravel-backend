@@ -115,7 +115,7 @@ class ProductService
 
     public function saveFile(Product $product, string $file_key): Product
     {
-        $this->deleteFile($product, $file_key);
+        // $this->deleteFile($product, $file_key);
         $file = (new FileService)->save_file($file_key, (new Product)->image_path);
         return $this->update([
             $file_key => $file,
@@ -124,7 +124,7 @@ class ProductService
 
     public function delete(Product $product): bool|null
     {
-        $this->deleteFile($product, 'featured_image');
+        // $this->deleteFile($product, 'featured_image');
         return $product->delete();
     }
 
@@ -142,14 +142,16 @@ class CommonFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->where('name', 'LIKE', '%' . $value . '%')
-        ->orWhere('description', 'LIKE', '%' . $value . '%')
-        ->orWhere('price', 'LIKE', '%' . $value . '%')
-        ->orWhere('discount', 'LIKE', '%' . $value . '%')
-        ->orWhere('is_active', 'LIKE', '%' . $value . '%')
-        ->orWhere('is_new_arrival', 'LIKE', '%' . $value . '%')
-        ->orWhere('is_featured', 'LIKE', '%' . $value . '%')
-        ->orWhere('is_best_sale', 'LIKE', '%' . $value . '%')
-        ->orWhere('slug', 'LIKE', '%' . $value . '%');
+        $query->where(function($q) use($value){
+            $q->where('name', 'LIKE', '%' . $value . '%')
+            ->orWhere('description', 'LIKE', '%' . $value . '%')
+            ->orWhere('price', 'LIKE', '%' . $value . '%')
+            ->orWhere('discount', 'LIKE', '%' . $value . '%')
+            ->orWhere('is_active', 'LIKE', '%' . $value . '%')
+            ->orWhere('is_new_arrival', 'LIKE', '%' . $value . '%')
+            ->orWhere('is_featured', 'LIKE', '%' . $value . '%')
+            ->orWhere('is_best_sale', 'LIKE', '%' . $value . '%')
+            ->orWhere('slug', 'LIKE', '%' . $value . '%');
+        });
     }
 }

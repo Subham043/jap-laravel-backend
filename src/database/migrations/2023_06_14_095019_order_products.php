@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('product_name', 500)->nullable();
             $table->string('product_slug', 500)->nullable();
             $table->string('product_description', 500)->nullable();
+            $table->string('product_image', 500)->nullable();
             $table->string('product_price', 500)->nullable();
             $table->string('product_dicount', 500)->nullable();
+            $table->string('product_weight', 500)->nullable();
             $table->foreignId('product_id')->nullable()->constrained('products')->nullOnDelete();
             $table->foreignId('order_id')->nullable()->constrained('orders')->nullOnDelete();
         });
@@ -32,3 +34,5 @@ return new class extends Migration
         Schema::dropIfExists('order_products');
     }
 };
+
+// ALTER TABLE `order_products` ADD `product_image` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `product_dicount`, ADD `product_weight` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `product_image`;

@@ -28,12 +28,6 @@ class BannerUpdateController extends Controller
             if($request->hasFile('banner_image')){
                 $this->bannerService->saveImage($banner);
             }
-            if($request->hasFile('counter_image_1')){
-                $this->bannerService->saveImage($banner);
-            }
-            if($request->hasFile('counter_image_2')){
-                $this->bannerService->saveImage($banner);
-            }
             return response()->json([
                 'message' => "Banner updated successfully.",
                 'banner' => UserBannerCollection::make($banner),

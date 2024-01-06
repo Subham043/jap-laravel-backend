@@ -2,6 +2,7 @@
 
 use App\Modules\Authentication\Controllers\ResetPasswordController;
 use App\Modules\Category\Controllers\CategoryExcelController;
+use App\Modules\Contact\Controllers\ContactExcelController;
 use App\Modules\Enquiry\Controllers\EnquiryExcelController;
 use App\Modules\Order\Controllers\InvoiceController;
 use App\Modules\Order\Controllers\OrderExcelController;
@@ -40,6 +41,7 @@ Route::post('/verify-order-payment/{receipt}', [OrderPaymentController::class, '
 Route::prefix('/api/v1')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/invoice/{reciept}', [InvoiceController::class, 'get'])->name('invoice.pdf');
     Route::get('/enquiry/excel', [EnquiryExcelController::class, 'get'])->name('enquiry.excel');
+    Route::get('/contact/excel', [ContactExcelController::class, 'get'])->name('contact.excel');
     Route::get('/category/excel', [CategoryExcelController::class, 'get'])->name('category.excel');
     Route::get('/product/excel', [ProductExcelController::class, 'get'])->name('product.excel');
     Route::get('/order/excel', [OrderExcelController::class, 'get'])->name('order.excel');

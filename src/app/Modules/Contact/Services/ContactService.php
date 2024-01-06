@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Pincode\Services;
+namespace App\Modules\Contact\Services;
 
-use App\Modules\Pincode\Models\Pincode;
+use App\Modules\Contact\Models\Contact;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\Filters\Filter;
@@ -10,17 +10,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 
-class PincodeService
+class ContactService
 {
 
     public function all(): Collection
     {
-        return Pincode::all();
+        return Contact::all();
     }
 
     public function paginate(Int $total = 10): LengthAwarePaginator
     {
-        $query = Pincode::latest();
+        $query = Contact::latest();
         return QueryBuilder::for($query)
                 ->allowedFilters([
                     AllowedFilter::custom('search', new CommonFilter),
@@ -29,31 +29,26 @@ class PincodeService
                 ->appends(request()->query());
     }
 
-    public function getById(Int $id): Pincode|null
+    public function getById(Int $id): Contact|null
     {
-        return Pincode::findOrFail($id);
+        return Contact::findOrFail($id);
     }
 
-    public function getByCode(String $code): Pincode
+    public function create(array $data): Contact
     {
-        return Pincode::where('code', $code)->firstOrFail();
+        $contact = Contact::create($data);
+        return $contact;
     }
 
-    public function create(array $data): Pincode
+    public function update(array $data, Contact $contact): Contact
     {
-        $pincode = Pincode::create($data);
-        return $pincode;
+        $contact->update($data);
+        return $contact;
     }
 
-    public function update(array $data, Pincode $pincode): Pincode
+    public function delete(Contact $contact): bool|null
     {
-        $pincode->update($data);
-        return $pincode;
-    }
-
-    public function delete(Pincode $pincode): bool|null
-    {
-        return $pincode->delete();
+        return $contact->delete();
     }
 
 }
@@ -63,8 +58,10 @@ class CommonFilter implements Filter
     public function __invoke(Builder $query, $value, string $property)
     {
         $query->where(function($q) use($value){
-            $q->where('place', 'LIKE', '%' . $value . '%')
-            ->orWhere('pincode', 'LIKE', '%' . $value . '%');
+          $q->where('name', 'LIKE', '%' . $value . '%')
+          ->orWhere('email', 'LIKE', '%' . $value . '%')
+          ->orWhere('phone', 'LIKE', '%' . $value . '%')
+          ->orWhere('message', 'LIKE', '%' . $value . '%');
         });
     }
 }

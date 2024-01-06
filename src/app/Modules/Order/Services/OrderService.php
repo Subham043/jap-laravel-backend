@@ -200,10 +200,10 @@ class OrderService
             'coupon'
         ])->withCount(['products'])->create(
             [...$data, 'user_id'=>auth()->user()->id, 'coupon_id' => null, 'coupon_discount' => 0]);
-        return $this->save_products_coupons($order);
+        return $this->save_products_info($order);
     }
 
-    public function save_products_coupons(Order $order): Order
+    public function save_products_info(Order $order): Order
     {
         $cart = (new CartService)->get();
         $order->sub_total = $cart->sub_total;
@@ -230,8 +230,10 @@ class OrderService
                 $product_array['product_name'] = $value->name;
                 $product_array['product_slug'] = $value->slug;
                 $product_array['product_description'] = $value->description;
+                $product_array['product_image'] = $value->featured_image;
                 $product_array['product_price'] = $value->price;
                 $product_array['product_dicount'] = $value->discount;
+                $product_array['product_weight'] = $value->weight;
                 array_push($products_array,$product_array);
                 if($order->mode_of_payment == PaymentMode::COD){
                     $this->update_product_inventory($value, $value->pivot->quantity);
@@ -263,40 +265,42 @@ class CommonFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->where('sub_total', 'LIKE', '%' . $value . '%')
-        ->orWhere('total_price', 'LIKE', '%' . $value . '%')
-        ->orWhere('total_discount', 'LIKE', '%' . $value . '%')
-        ->orWhere('coupon_discount', 'LIKE', '%' . $value . '%')
-        ->orWhere('coupon_name', 'LIKE', '%' . $value . '%')
-        ->orWhere('coupon_code', 'LIKE', '%' . $value . '%')
-        ->orWhere('coupon_discount_percentage', 'LIKE', '%' . $value . '%')
-        ->orWhere('coupon_maximum_discount', 'LIKE', '%' . $value . '%')
-        ->orWhere('coupon_maximum_use', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_first_name', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_last_name', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_email', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_phone', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_country', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_state', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_city', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_pin', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_address_1', 'LIKE', '%' . $value . '%')
-        ->orWhere('billing_address_2', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_first_name', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_last_name', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_email', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_phone', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_country', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_state', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_city', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_pin', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_address_1', 'LIKE', '%' . $value . '%')
-        ->orWhere('shipping_address_2', 'LIKE', '%' . $value . '%')
-        ->orWhere('order_notes', 'LIKE', '%' . $value . '%')
-        ->orWhere('mode_of_payment', 'LIKE', '%' . $value . '%')
-        ->orWhere('order_status', 'LIKE', '%' . $value . '%')
-        ->orWhere('payment_status', 'LIKE', '%' . $value . '%')
-        ->orWhere('razorpay_order_id', 'LIKE', '%' . $value . '%')
-        ->orWhere('receipt', 'LIKE', '%' . $value . '%');
+        $query->where(function($q) use($value){
+            $q->where('sub_total', 'LIKE', '%' . $value . '%')
+            ->orWhere('total_price', 'LIKE', '%' . $value . '%')
+            ->orWhere('total_discount', 'LIKE', '%' . $value . '%')
+            ->orWhere('coupon_discount', 'LIKE', '%' . $value . '%')
+            ->orWhere('coupon_name', 'LIKE', '%' . $value . '%')
+            ->orWhere('coupon_code', 'LIKE', '%' . $value . '%')
+            ->orWhere('coupon_discount_percentage', 'LIKE', '%' . $value . '%')
+            ->orWhere('coupon_maximum_discount', 'LIKE', '%' . $value . '%')
+            ->orWhere('coupon_maximum_use', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_first_name', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_last_name', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_email', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_phone', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_country', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_state', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_city', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_pin', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_address_1', 'LIKE', '%' . $value . '%')
+            ->orWhere('billing_address_2', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_first_name', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_last_name', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_email', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_phone', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_country', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_state', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_city', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_pin', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_address_1', 'LIKE', '%' . $value . '%')
+            ->orWhere('shipping_address_2', 'LIKE', '%' . $value . '%')
+            ->orWhere('order_notes', 'LIKE', '%' . $value . '%')
+            ->orWhere('mode_of_payment', 'LIKE', '%' . $value . '%')
+            ->orWhere('order_status', 'LIKE', '%' . $value . '%')
+            ->orWhere('payment_status', 'LIKE', '%' . $value . '%')
+            ->orWhere('razorpay_order_id', 'LIKE', '%' . $value . '%')
+            ->orWhere('receipt', 'LIKE', '%' . $value . '%');
+        });
     }
 }

@@ -65,7 +65,7 @@ class CategoryService
 
     public function saveFile(Category $category, string $file_key): Category
     {
-        $this->deleteFile($category, $file_key);
+        // $this->deleteFile($category, $file_key);
         $file = (new FileService)->save_file($file_key, (new Category)->image_path);
         return $this->update([
             $file_key => $file,
@@ -74,8 +74,8 @@ class CategoryService
 
     public function delete(Category $category): bool|null
     {
-        $this->deleteFile($category, 'banner_image');
-        $this->deleteFile($category, 'icon_image');
+        // $this->deleteFile($category, 'banner_image');
+        // $this->deleteFile($category, 'icon_image');
         return $category->delete();
     }
 
@@ -93,9 +93,11 @@ class CommonFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->where('name', 'LIKE', '%' . $value . '%')
-        ->orWhere('description', 'LIKE', '%' . $value . '%')
-        ->orWhere('is_active', 'LIKE', '%' . $value . '%')
-        ->orWhere('slug', 'LIKE', '%' . $value . '%');
+        $query->where(function($q) use($value){
+            $q->where('name', 'LIKE', '%' . $value . '%')
+            ->orWhere('description', 'LIKE', '%' . $value . '%')
+            ->orWhere('is_active', 'LIKE', '%' . $value . '%')
+            ->orWhere('slug', 'LIKE', '%' . $value . '%');
+        });
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Modules\Enquiry\Services;
 
-use App\Http\Services\FileService;
 use App\Modules\Enquiry\Models\Enquiry;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -58,20 +57,22 @@ class CommonFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->where('name', 'LIKE', '%' . $value . '%')
-        ->orWhere('email', 'LIKE', '%' . $value . '%')
-        ->orWhere('phone', 'LIKE', '%' . $value . '%')
-        ->orWhere('company_name', 'LIKE', '%' . $value . '%')
-        ->orWhere('company_website', 'LIKE', '%' . $value . '%')
-        ->orWhere('designation', 'LIKE', '%' . $value . '%')
-        ->orWhere('product', 'LIKE', '%' . $value . '%')
-        ->orWhere('quantity', 'LIKE', '%' . $value . '%')
-        ->orWhere('gst', 'LIKE', '%' . $value . '%')
-        ->orWhere('certification', 'LIKE', '%' . $value . '%')
-        ->orWhere('address', 'LIKE', '%' . $value . '%')
-        ->orWhere('alternate_name', 'LIKE', '%' . $value . '%')
-        ->orWhere('alternate_phone', 'LIKE', '%' . $value . '%')
-        ->orWhere('alternate_email', 'LIKE', '%' . $value . '%')
-        ->orWhere('message', 'LIKE', '%' . $value . '%');
+        $query->where(function($q) use($value){
+          $q->where('name', 'LIKE', '%' . $value . '%')
+          ->orWhere('email', 'LIKE', '%' . $value . '%')
+          ->orWhere('phone', 'LIKE', '%' . $value . '%')
+          ->orWhere('company_name', 'LIKE', '%' . $value . '%')
+          ->orWhere('company_website', 'LIKE', '%' . $value . '%')
+          ->orWhere('designation', 'LIKE', '%' . $value . '%')
+          ->orWhere('product', 'LIKE', '%' . $value . '%')
+          ->orWhere('quantity', 'LIKE', '%' . $value . '%')
+          ->orWhere('gst', 'LIKE', '%' . $value . '%')
+          ->orWhere('certification', 'LIKE', '%' . $value . '%')
+          ->orWhere('address', 'LIKE', '%' . $value . '%')
+          ->orWhere('alternate_name', 'LIKE', '%' . $value . '%')
+          ->orWhere('alternate_phone', 'LIKE', '%' . $value . '%')
+          ->orWhere('alternate_email', 'LIKE', '%' . $value . '%')
+          ->orWhere('message', 'LIKE', '%' . $value . '%');
+        });
     }
 }

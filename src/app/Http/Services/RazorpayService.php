@@ -10,7 +10,7 @@ class RazorpayService
     public function create_order_id(float $amount, string $receipt): string
     {
 
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
         $orderData = [
             'receipt'         => $receipt,
             'amount'          => $amount*100, // 39900 rupees in paise
@@ -25,7 +25,7 @@ class RazorpayService
     public function refund(float $amount, string $razorpay_payment_id): void
     {
 
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
         $refundData = [
             'amount'          => $amount*100, // 39900 rupees in paise
             'speed'        => 'normal',
@@ -37,7 +37,7 @@ class RazorpayService
     public function payment_verify(array $data): bool
     {
 
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
         try
         {
             $data['status'] = 1;
