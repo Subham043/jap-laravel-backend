@@ -67,6 +67,12 @@ use App\Modules\Coupon\Controllers\CouponPaginateController;
 use App\Modules\Coupon\Controllers\CouponUpdateController;
 use App\Modules\DeliveryCharge\Controllers\DeliveryChargeDetailController;
 use App\Modules\DeliveryCharge\Controllers\DeliveryChargeSaveController;
+use App\Modules\GalleryCategory\Controllers\GalleryCategoryCreateController;
+use App\Modules\GalleryCategory\Controllers\GalleryCategoryDeleteController;
+use App\Modules\GalleryCategory\Controllers\GalleryCategoryDetailController;
+use App\Modules\GalleryCategory\Controllers\GalleryCategoryPaginateController;
+use App\Modules\GalleryCategory\Controllers\GalleryCategoryUpdateController;
+use App\Modules\GalleryCategory\Controllers\MainGalleryCategoryPaginateController;
 use App\Modules\HomePage\Banner\Controllers\BannerCreateController;
 use App\Modules\HomePage\Banner\Controllers\BannerDeleteController;
 use App\Modules\HomePage\Banner\Controllers\BannerDetailController;
@@ -144,6 +150,10 @@ Route::prefix('product/main')->group(function () {
 Route::prefix('category/main')->group(function () {
     Route::get('/paginate', [MainCategoryPaginateController::class, 'get'])->name('category.paginate.main');
     Route::get('/detail/{slug}', [MainCategoryDetailController::class, 'get'])->name('category.detail.main');
+});
+
+Route::prefix('gallery-category/main')->group(function () {
+    Route::get('/paginate', [MainGalleryCategoryPaginateController::class, 'get'])->name('gallery_category.paginate.main');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -233,6 +243,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/update/{id}', [CategoryUpdateController::class, 'post'])->name('category.update');
         Route::delete('/delete/{id}', [CategoryDeleteController::class, 'delete'])->name('category.delete');
         Route::get('/detail/{id}', [CategoryDetailController::class, 'get'])->name('category.get');
+    });
+
+    Route::prefix('gallery-category')->group(function () {
+        Route::get('/paginate', [GalleryCategoryPaginateController::class, 'get'])->name('gallery_category.paginate');
+        Route::post('/create', [GalleryCategoryCreateController::class, 'post'])->name('gallery_category.create');
+        Route::post('/update/{id}', [GalleryCategoryUpdateController::class, 'post'])->name('gallery_category.update');
+        Route::delete('/delete/{id}', [GalleryCategoryDeleteController::class, 'delete'])->name('gallery_category.delete');
+        Route::get('/detail/{id}', [GalleryCategoryDetailController::class, 'get'])->name('gallery_category.get');
     });
 
     Route::prefix('product')->group(function () {

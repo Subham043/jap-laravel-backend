@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\RateLimitService;
 use App\Modules\Authentication\Models\User;
 use App\Modules\Authentication\Requests\ResetPasswordPostRequest;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
