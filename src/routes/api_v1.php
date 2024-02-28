@@ -67,6 +67,12 @@ use App\Modules\Coupon\Controllers\CouponPaginateController;
 use App\Modules\Coupon\Controllers\CouponUpdateController;
 use App\Modules\DeliveryCharge\Controllers\DeliveryChargeDetailController;
 use App\Modules\DeliveryCharge\Controllers\DeliveryChargeSaveController;
+use App\Modules\Gallery\Controllers\GalleryCreateController;
+use App\Modules\Gallery\Controllers\GalleryDeleteController;
+use App\Modules\Gallery\Controllers\GalleryDetailController;
+use App\Modules\Gallery\Controllers\GalleryPaginateController;
+use App\Modules\Gallery\Controllers\GalleryUpdateController;
+use App\Modules\Gallery\Controllers\MainGalleryPaginateController;
 use App\Modules\GalleryCategory\Controllers\GalleryCategoryCreateController;
 use App\Modules\GalleryCategory\Controllers\GalleryCategoryDeleteController;
 use App\Modules\GalleryCategory\Controllers\GalleryCategoryDetailController;
@@ -145,6 +151,10 @@ Route::prefix('product/main')->group(function () {
     Route::prefix('/reviews/{product_id}')->group(function () {
         Route::post('/create', [ProductReviewCreateController::class, 'post'])->name('product.review.create.main');
     });
+});
+
+Route::prefix('gallery/main')->group(function () {
+    Route::get('/paginate', [MainGalleryPaginateController::class, 'get'])->name('gallery.paginate.main');
 });
 
 Route::prefix('category/main')->group(function () {
@@ -276,6 +286,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::get('/detail/{id}', [ProductReviewDetailController::class, 'get'])->name('product.review.get');
             });
         });
+    });
+
+    Route::prefix('gallery')->group(function () {
+        Route::get('/paginate', [GalleryPaginateController::class, 'get'])->name('gallery.paginate');
+        Route::post('/create', [GalleryCreateController::class, 'post'])->name('gallery.create');
+        Route::post('/update/{id}', [GalleryUpdateController::class, 'post'])->name('gallery.update');
+        Route::delete('/delete/{id}', [GalleryDeleteController::class, 'delete'])->name('gallery.delete');
+        Route::get('/detail/{id}', [GalleryDetailController::class, 'get'])->name('gallery.get');
     });
 
     Route::prefix('coupon')->group(function () {

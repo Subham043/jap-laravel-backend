@@ -3,7 +3,7 @@
 namespace App\Modules\GalleryCategory\Models;
 
 use App\Modules\Authentication\Models\User;
-use App\Modules\Product\Models\Product;
+use App\Modules\Gallery\Models\Gallery;
 use Illuminate\Database\Eloquent\Model;
 
 class GalleryCategory extends Model
@@ -27,6 +27,6 @@ class GalleryCategory extends Model
 
     public function gallery()
     {
-        return $this->hasMany(Product::class, 'product_categories', 'category_id', 'product_id');
+        return $this->hasMany(Gallery::class, 'gallery_categories_id');
     }
 }
